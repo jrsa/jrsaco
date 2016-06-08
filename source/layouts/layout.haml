@@ -1,0 +1,12 @@
+%html
+    %head
+        %title 
+            = current_page.data.title || "Middleman"
+
+        = stylesheet_link_tag '//fonts.googleapis.com/css?family=Lato:300,400'
+
+        = stylesheet_link_tag :site
+        = javascript_include_tag :all
+    
+    %body
+        = yield
