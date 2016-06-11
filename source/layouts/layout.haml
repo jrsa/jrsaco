@@ -1,12 +1,13 @@
 %html
-    %head
-        %title 
-            = current_page.data.title || "Middleman"
+  %head
+    %title 
+      =current_page.data.title || "james anderson"
 
-        = stylesheet_link_tag '//fonts.googleapis.com/css?family=Lato:300,400'
-
-        = stylesheet_link_tag :site
-        = javascript_include_tag :all
-    
-    %body
-        = yield
+    =stylesheet_link_tag '//fonts.googleapis.com/css?family=Anonymous+Pro'
+    =stylesheet_link_tag :site
+    =javascript_include_tag :all
+  
+  %body
+    =partial :nav
+    .content
+      =yield
