@@ -1,0 +1,10 @@
+---
+title: "Performances"
+videos:
+  - 169909316
+  - 128233085
+---
+
+.videos
+  - current_page.data.videos.each do |id|
+    =partial :vimeo_embed, :locals => {id: id}
