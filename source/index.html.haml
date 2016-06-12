@@ -1,2 +1,3 @@
-#welcome
-    %h1= "index" * 69
+.content
+  - s3_imgs('fb2').each do |img|
+    =image_tag img.url(:authenticated => false)
