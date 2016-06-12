@@ -12,4 +12,9 @@ gem 'tzinfo-data', platforms: [:mswin, :mingw, :jruby]
 gem 'middleman', '>= 4.0.0'
 gem 'middleman-livereload'
 
+# grab existing asset urls from s3
 gem 'aws-s3'
+
+# deployment
+gem "capistrano", "~> 3.4"
+gem 'capistrano-middleman', require: false
