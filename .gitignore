@@ -19,3 +19,5 @@
 
 *.sublime-workspace
 keys
+
+/log
