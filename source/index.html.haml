@@ -1,3 +1,11 @@
+---
+title: "hello"
+---
 .content
-  - s3_imgs('fb2').each do |img|
-    =image_tag img.url(:authenticated => false)
+  %p 
+    james anderson is an artist based in los angeles, ca, usa. 
+    he works in music and interactive media.
+  %p
+    =link_to 'contact via email', 'mailto:jrsa@jrsa.co'
+  #frontispiece
+    =image_tag 'https://jrsaco.s3.amazonaws.com/untitled%20folder/bg copy.jpg', style: "width: 100%"

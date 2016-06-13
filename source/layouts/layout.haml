@@ -1,13 +1,17 @@
 %html
   %head
     %title 
-      =current_page.data.title || "james anderson"
+      ="#{current_page.data.title} - jrsa.co"
 
-    =stylesheet_link_tag '//fonts.googleapis.com/css?family=Anonymous+Pro'
-    =stylesheet_link_tag :site
-    =javascript_include_tag :all
+    =stylesheet_link_tag '//fonts.googleapis.com/css?family=Anonymous+Pro', :async => true
+    =stylesheet_link_tag :site, :async => true
   
   %body
-    =partial :nav
-    .content
-      =yield
+    .container
+      %header
+        =partial :nav
+      .content
+        =yield
+      %footer 
+        %p copyright 2016 james anderson, all rights reserved
+    =javascript_include_tag :all, :async => true

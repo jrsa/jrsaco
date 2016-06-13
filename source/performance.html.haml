@@ -1,10 +1,27 @@
 ---
-title: "Performances"
-videos:
-  - 169909316
-  - 128233085
+title: "performances"
 ---
 
-.videos
-  - current_page.data.videos.each do |id|
-    =partial :vimeo_embed, :locals => {id: id}
+.vid
+  .desc 
+    %h1 translation, 2015
+    %p 
+      i did a performance where i sat at a desk and pretended to work on a computer,
+      with no screen. i typed on a keyboard, which controlled a music synthesis program
+      on a hidden computer. the ascii key codes were mapped to sequential midi notes.
+  .player
+    =partial :vimeo_embed, :locals => {id: 169909316}
+
+.vid
+  .desc
+    %h1 critical density, 2015
+    %p (with Elli Altman, Sam Martinez, Evan Pierre, and Harry van Dort)
+    %p 
+      this was a collaboration where each one of us performed a repetitive action
+      as part of a cycle, which gradually accelerated in speed. evan and i worked
+      to create an audiovisual representation of this cycle which was projected onto
+      the performance space. i composed a small piece of music for each person's action,
+      each of which was illuminated by overhead lights during the cyclical increments.
+      
+  .player
+    =partial :vimeo_embed, :locals => {id: 128233085}

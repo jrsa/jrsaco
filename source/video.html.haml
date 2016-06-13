@@ -1,5 +1,14 @@
-# fomo 2016
-# from me 2016
+---
+title: "interactive/video"
+---
 
-.content
-  =partial :vimeo_embed, :locals => {id: 112002556}
+.vid
+  .desc 
+    %p untitled (for fomo), 2016 (with megumi sabik), interactive video for web
+  .player
+    =link_to '(opens in new window)', '/fomo'
+.vid
+  .desc
+    %p wimb, 2014, video with audio synthesis
+  .player
+    =partial :vimeo_embed, :locals => {id: 112002556}
