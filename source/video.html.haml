@@ -1,12 +1,26 @@
 ---
 title: "interactive/video"
 ---
+.vid
+  .desc
+    %h1 from me, 2016 (with kamari carter)
+    %p
+      interactive video installation using a kinect. shown at calarts digital arts expo.
+      1,000,000 particles are displayed but are only visible when in motion. movement
+      in the kinect image excites them.
+      =link_to 'source code on bitbucket.org', 'https://bitbucket.org/jrsa/from_me'
+  .player
+    =partial :vimeo_embed, :locals => {id: 170845060}
 
 .vid
-  .desc 
-    %p untitled (for fomo), 2016 (with megumi sabik), interactive video for web
+  .desc
+    %h1 untitled , 2016 (with megumi sabik)
+    %p
+      interactive video shown on the web for FOMO, a show on the web. video is fed back into the background and the audio track is distorted. both are controlled by the mouse.
+      =link_to 'source code on bitbucket.org', 'https://bitbucket.org/jrsa/fomo'
   .player
     =link_to '(opens in new window)', '/fomo'
+    
 .vid
   .desc
     %p wimb, 2014, video with audio synthesis
