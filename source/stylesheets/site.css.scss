@@ -2,6 +2,7 @@
 
 @import "bourbon";
 @import "base/base"; // bitters
+@import "grid-settings";
 @import "neat";
 
 $color1: rgba(0, 0, 0, 0.5);
@@ -60,32 +61,35 @@ header {
   }
 }
 
-// #frontispiece {
-//   img {
-//     max-height: 10%;
-//   }
-// }
-
 .content {
-  @include outer-container;
-  @span-columns(12);
+
+    @include outer-container;
+
   margin-top: 20px;
   margin-bottom: 20px;
-}
-.vid {
-  margin: 20px;
-  padding: 20px;
+
   .desc {
-    @include span-columns(6);
+    // @include span-columns(6);
     text-align: left;
   }
-
-  .player {
-    @include span-columns(6);
-      display: inline-block;
-      // height: 150em;
+  .vid {
+  @include outer-container;
+    margin: 20px;
+    .desc {
+      @include span-columns(6);
+    }
+    .player {
+      @include span-columns(6);
+      iframe {
+        height: 240px;
+      }
+    }
+  }
+  .img {
+    @include span-columns(4);
   }
 }
+
 
 footer {
   @include outer-container;
@@ -122,7 +126,7 @@ h1 {
 
 a {
   &:hover {
-    text-decoration: underline;
+    // text-decoration: underline;
     font-weight: bold;
   }
 }
