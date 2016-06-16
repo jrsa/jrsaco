@@ -1,19 +1,20 @@
 ---
 title: "images"
 ---
+
+// .desc
 %h1 feedbacks
-%p
-  a series of images created using a feedback technique, captured from an infinite video.
-  
--s3_imgs('fb2').each do |img|
+%p a series of images created using a feedback technique, captured from an infinite video.
+
+-s3_imgs('fb2').each do |img|  
   %a{href: img.url(:authenticated => false), target: "_blank"}
     =image_tag img.url(:authenticated => false)
   
--s3_imgs('fb1').each do |img|
+-s3_imgs('fb1').each do |img|  
   %a{href: img.url(:authenticated => false), target: "_blank"}
     =image_tag img.url(:authenticated => false)
 
 %a#boink
--s3_imgs('boink').each do |img|
+-s3_imgs('boink').each do |img|  
   %a{href: img.url(:authenticated => false), target: "_blank"}
     =image_tag img.url(:authenticated => false)
