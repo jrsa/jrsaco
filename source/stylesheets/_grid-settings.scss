@@ -1,0 +1,4 @@
+@import "neat-helpers"; // or "neat-helpers" when in Rails
+
+// Define your breakpoints
+$mobile: new-breakpoint(max-width 600px 6);
