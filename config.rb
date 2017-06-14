@@ -33,7 +33,7 @@ config[:bucket_name] = 'jrsaco'
 
 # Methods defined in the helpers block are available in templates
 helpers do
-  bucket_name = 'jrsaco'
+  bucket_name = 'jrsacocontent'
   # set these ENVs for connection
   # TODO: properly handle error if these aren't here
   id =  ENV['AMAZON_ACCESS_KEY_ID']
@@ -63,7 +63,7 @@ configure :build do
 end
 
 activate :s3_sync do |s3_sync|
-  s3_sync.bucket                     = 'jrsa'
+  s3_sync.bucket                     = 'jrsa.co'
   s3_sync.region                     = 'us-west-2'    
   # s3_sync.aws_access_key_id          = 'AWS KEY ID'
   # s3_sync.aws_secret_access_key      = 'AWS SECRET KEY'
