@@ -21,3 +21,6 @@
 keys
 
 /log
+
+# SEKRET KEYS
+.s3_sync

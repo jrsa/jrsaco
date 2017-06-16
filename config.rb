@@ -33,7 +33,7 @@ config[:bucket_name] = 'jrsacocontent'
 
 # Methods defined in the helpers block are available in templates
 helpers do
-  # bucket_name = 'jrsaco'
+  bucket_name = 'jrsacocontent'
   # set these ENVs for connection
   # TODO: properly handle error if these aren't here
   id =  ENV['AMAZON_ACCESS_KEY_ID']
@@ -60,4 +60,22 @@ configure :build do
 
   # Minify Javascript on build
   # activate :minify_javascript
+end
+
+activate :s3_sync do |s3_sync|
+  s3_sync.bucket                     = 'jrsa.co'
+  s3_sync.region                     = 'us-west-2'    
+  # s3_sync.aws_access_key_id          = 'AWS KEY ID'
+  # s3_sync.aws_secret_access_key      = 'AWS SECRET KEY'
+  s3_sync.delete                     = false # We delete stray files by default.
+  s3_sync.after_build                = false # We do not chain after the build step by default.
+  s3_sync.prefer_gzip                = true
+  s3_sync.path_style                 = true
+  s3_sync.reduced_redundancy_storage = false
+  s3_sync.acl                        = 'public-read'
+  s3_sync.encryption                 = false
+  s3_sync.prefix                     = ''
+  s3_sync.version_bucket             = false
+  s3_sync.index_document             = 'index.html'
+  s3_sync.error_document             = 'error.html'
 end
