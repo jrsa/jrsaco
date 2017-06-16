@@ -29,11 +29,11 @@ end
 # Helpers
 ###
 
-config[:bucket_name] = 'jrsaco'
+config[:bucket_name] = 'jrsacocontent'
 
 # Methods defined in the helpers block are available in templates
 helpers do
-  bucket_name = 'jrsaco'
+  # bucket_name = 'jrsaco'
   # set these ENVs for connection
   # TODO: properly handle error if these aren't here
   id =  ENV['AMAZON_ACCESS_KEY_ID']
