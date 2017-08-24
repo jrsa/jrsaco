@@ -1,4 +1,4 @@
-require 'aws/s3'
+require 'aws-sdk'
 
 ###
 # Page options, layouts, aliases and proxies
@@ -29,23 +29,18 @@ end
 # Helpers
 ###
 
-config[:bucket_name] = 'jrsacocontent'
 
 # Methods defined in the helpers block are available in templates
 helpers do
-  bucket_name = 'jrsacocontent'
-  # set these ENVs for connection
-  # TODO: properly handle error if these aren't here
-  id =  ENV['AMAZON_ACCESS_KEY_ID']
-  key = ENV['AMAZON_SECRET_ACCESS_KEY']
-
-  AWS::S3::Base.establish_connection!(access_key_id: id, secret_access_key: key)
 
   def s3_imgs match
-    bucket = AWS::S3::Bucket.find(config[:bucket_name])
+    bucket_name = 'jrsacocontent'
+    region = 'us-west-2'
+    s3 = Aws::S3::Resource.new(region: region)
+    bucket = s3.bucket(bucket_name)
 
     # return sub-array of all images containing 'match' 
-    bucket.objects.select{ |ob| ob.key[match] && ob.about[:content_type]['image'] }
+    bucket.objects.select{ |ob| ob.key[match] && ob.object.content_type['image'] }
   end
 
   def vimeo_player id

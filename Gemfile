@@ -14,10 +14,11 @@ gem 'middleman-livereload'
 
 
 # grab existing asset urls from s3
-gem 'aws-s3'
+gem 'aws-sdk'
 
 # upload built site to s3, while you're at it
 gem 'middleman-s3_sync'
+gem 'mime-types'
 
 # deployment
 gem "capistrano", "~> 3.4"

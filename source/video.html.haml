@@ -1,20 +1,30 @@
 ---
 title: "interactive/video"
 ---
-.vid
-  .desc
-    %h1 from me, 2016 (with kamari carter)
-    %p
-      video installation using a kinect. shown at calarts digital arts expo. particles are displayed but are only visible when set in motion by the depth information from the kinect.
-      =link_to 'source code on bitbucket.org', 'https://bitbucket.org/jrsa/from_me'
-  .player
-    =partial :vimeo_embed, :locals => {id: 170845060}
+
 
 .vid
   .desc
-    %h1 untitled , 2016 (with megumi sabik)
+    %h1 lessForm, 2017 (with clay burton)
     %p
-      interactive video shown on the web for FOMO, a show on the web. video is fed back into the background and the audio track is distorted. both are controlled by the mouse.
+      music video for clay burton's song, lessForm. i used openFrameworks to post process footage captured by clay. 
+  .player
+    =partial :vimeo_embed, :locals => {id: 223358891}
+
+
+.vid
+  .desc
+    %h1 trans laser vol. 28, 2017 (with scallion jake)
+    %p
+      analog processed video with scallion jake, soundtrack by me
+  .player
+    =partial :vimeo_embed, :locals => {id: 215382638}
+
+.vid
+  .desc
+    %h1 untitled, 2016 (with megumi sabik)
+    %p
+      interactive video/browser art, shown at FOMO, an online exhibition
       =link_to 'source code on bitbucket.org', 'https://bitbucket.org/jrsa/fomo'
   .player
     =link_to '(opens in new window)', '/fomo'

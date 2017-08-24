@@ -3,5 +3,5 @@ title: "images"
 ---
 
 -s3_imgs('profile2017').each do |img|  
-  %a{href: img.url(:authenticated => false), target: "_blank"}
-    =image_tag img.url(:authenticated => false)
+  %a{href: img.public_url, target: "_blank"}
+    =image_tag img.public_url
