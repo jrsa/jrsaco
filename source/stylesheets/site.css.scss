@@ -48,14 +48,17 @@ header {
             margin: 10px 10px 10px 0px;
             a {
                 padding: 0.45em 0.7em;
-                color: $color1;
                 text-decoration: none;
                 transition: all 0.1s linear;
                 &:hover {
-                  background: rgba(0,1,0,1.0);
-                  color: #fff;
-                  transition: all 0.15s cubic;
+                    transition: all 0.15s cubic;
+                    background: black;
+                    color: white;
                 }
+            }
+            .current {
+                // border: 1px solid black;
+                font-weight: bold;
             }
         }
     }

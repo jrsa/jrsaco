@@ -46,6 +46,10 @@ helpers do
   def vimeo_player id
     "https://player.vimeo.com/video/#{id}"
   end
+
+  def nav_item(txt, href)
+    link_to(txt, href, class: current_page.url == href ? "current" : "")
+  end
 end
 
 # Build-specific configuration
