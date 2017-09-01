@@ -8,11 +8,12 @@
     <meta name=viewport content="width=device-width, initial-scale=1">
   
   %body
+    %header
+      =partial :nav
     .container
-      %header
-        =partial :nav
       .content
         =yield
-      %footer 
-        %p copyright 2016 james anderson, all rights reserved
+    %footer 
+      %p 
+        ="copyright #{Date.today.year} james anderson, all rights reserved"
     =javascript_include_tag :all, :async => true
