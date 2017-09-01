@@ -20,10 +20,6 @@ gem 'aws-sdk'
 gem 'middleman-s3_sync'
 gem 'mime-types'
 
-# deployment
-gem "capistrano", "~> 3.4"
-gem 'capistrano-middleman', require: false
-
 # hipster sass shit
 gem 'bitters'
 gem 'bourbon'
