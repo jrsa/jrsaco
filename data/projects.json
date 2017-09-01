@@ -1,0 +1,86 @@
+{
+    "projects": [
+        {
+            "type": "interactive",
+            "title": "auto2",
+            "year": 2017,
+            "link": "http://jrsa.co/auto2/"
+        },
+        {
+            "type": "video",
+            "title": "lessForm",
+            "year": 2017,
+            "collaborators": [
+                "clay burton"
+            ],
+            "statement": "music video for clay burton's song, lessForm. i used openFrameworks to post process footage captured by clay.",
+            "vimeo": 223358891
+        },
+        {
+            "type": "video",
+            "title": "trans laser volume 28",
+            "year": 2017,
+            "collaborators": [
+                "scallion jake"
+            ],
+            "statement": "analog processed video, with modular soundtrack",
+            "vimeo": 215382638
+        },
+        {
+            "type": "performance",
+            "title": "cmos club I",
+            "year": 2016,
+            "collaborators": [
+                "shaurjya banerjee",
+                "erin demastes",
+                "mike leisz",
+                "jason tibi",
+                "ashwin vaswani"
+            ],
+            "statement": "i participated in, and helped coordinate an experimental electronics club, the goal of which was to make musical instruments. after several months we did a performance, which included a new circuit design in front of the audience."
+        }, 
+        {
+            "type": "installation",
+            "title": "extraPerceptualCell",
+            "year": 2016,
+            "statement": "massage table was installed in a space, with a VR headset attached to the face rest area of the table, allowing participants to lie down and look down into a field of undulating video feedback."
+        },
+        {
+            "type": "interactive",
+            "title": "untitled",
+            "year": 2016,
+            "collaborators": [
+                "megumi sabik"
+            ],
+            "statement": "interactive video/browser art, shown at FOMO, an online exhibition",
+            "link": "http://jrsa.co/fomo/"
+        },
+        {
+            "type": "performance",
+            "title": "translation",
+            "year": 2015,
+            "statement": "i did a performance where i sat at a desk and pretended to work on a computer, with no screen. i typed on a keyboard, which controlled a music synthesis program on a hidden computer. the ascii key codes were mapped to sequential midi notes.",
+            "vimeo": 169909316
+        },
+        {
+            "type": "performance",
+            "title": "critical density",
+            "year": 2015,
+            "collaborators": [
+                "Elli Altman",
+                "Sam Martinez",
+                "Evan Pierre", 
+                "Harry van Dort"
+            ],
+            "statement": " this was a collaboration where each one of us performed a repetitive action as part of a cycle, which gradually accelerated in speed. evan and i worked to create an audiovisual representation of this cycle which was projected onto the performance space. i composed a small piece of music for each person's action, each of which was illuminated by overhead lights during the cyclical increments.",
+            "vimeo": 128233085
+        },
+        {
+            "type": "video",
+            "title": "wimb",
+            "year": 2014,
+            "statement": "processed video with synthesised sound",
+            "vimeo": 112002556
+        }
+    ]
+}
