@@ -60,6 +60,10 @@ header {
                 }
             }
             .current {
+                &:hover {
+                    background: inherit;
+                    color: inherit;
+                }
                 // border: 1px solid black;
                 font-weight: bold;
             }
