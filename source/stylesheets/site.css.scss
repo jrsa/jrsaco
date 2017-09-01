@@ -7,8 +7,6 @@
 
 $mobile: new-breakpoint(max-width 800px 8);
 
-$color1: rgba(0, 0, 0, 0.5);
-
 $grad1: hsl(210, 100%, 66%);
 $grad2: hsl(180, 100%, 66%);
 
@@ -26,7 +24,12 @@ body {
     padding: 10px;
     display: inline-block;
     overflow: scroll;
-    max-height: 85%;
+    max-height: 89%;
+
+    width: 80%;
+    @include media(max-width 668px) {
+        width: 100%;
+    }
     
     &::-webkit-scrollbar {
         display: none;
@@ -70,28 +73,36 @@ header {
     margin-top: 20px;
     margin-bottom: 20px;
 
+    .item {
+        @include outer-container;
+        margin: 20px 20px 50px 20px;
+        border-bottom: 1px solid black;
+        padding-bottom: 20px;
+    }
+
     .desc {
         text-align: left;
     }
 
     .vid {
-        @include outer-container;
-        margin: 20px;
         .desc {
-            @include span-columns(7);
+            @include span-columns(4);
             @include media($mobile) {
                 @include span-columns(8);        
             }
         }
         .player {
-            @include span-columns(5);
+            @include span-columns(8);
 
-            @include media($mobile) {
-                @include span-columns(8);        
-            }
+            // @include media($mobile) {
+            //     @include span-columns(8);        
+            // }
+
             iframe {
+                object-fit: cover;
+                object-position: center;
                 width: 100%;
-                height: 320px;
+                // height: 66%;
             }
         }
     }
@@ -101,24 +112,32 @@ header {
     }
 }
 
+#page_hello {
+    height: 70%;
+    background: white url(https://jrsacocontent.s3.amazonaws.com/bg.png) no-repeat center center fixed;
+    background-size: cover;
+}
+
 footer {
-    @include outer-container;
-    @span-columns(12);
-    p {
-        display: inline-block;
-        padding: 10px;
-    }
+    position: fixed;
+    left: 0px;
+    bottom: 1%;
+    height: 30px;
+    width: 100%;
 }
 
 img {
-    width: 49%;
 
-    object-fit: cover; /* Do not scale the image */
-    object-position: center; /* Center the image within the element */
-    height: 300px;
-
+    object-fit: cover;
+    object-position: center;
     display: inline;
     margin: auto;
+}
+
+img.gallery {
+    width: 49%;
+    height: 300px;
+
 }
 
 @include media(max-width 668px) {
@@ -129,16 +148,10 @@ img {
     }
 }
 
-h1 {
-    color: $color1;
-    font-size: 1.8em;
-    font-weight: 400;
-    margin: 0;
-}
-
 a {
     &:hover {
         font-weight: bold;
+        // text-shadow: 0.5px 0px 0px white, -0.5px 0px 0px white;
     }
 }
 

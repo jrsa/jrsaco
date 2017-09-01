@@ -3,11 +3,11 @@
     %title 
       ="#{current_page.data.title} - jrsa.co"
 
-    =stylesheet_link_tag '//fonts.googleapis.com/css?family=Anonymous+Pro', :async => true
+    / =stylesheet_link_tag '//fonts.googleapis.com/css?family=Anonymous+Pro', :async => true
     =stylesheet_link_tag :site, :async => true
     <meta name=viewport content="width=device-width, initial-scale=1">
   
-  %body
+  %body{id: ["page", current_page.data.title]}
     %header
       =partial :nav
     .container
