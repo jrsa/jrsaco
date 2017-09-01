@@ -4,4 +4,4 @@ title: "images"
 
 -s3_imgs('profile2017').each do |img|  
     %a{href: img.public_url, target: "_blank"}
-        =image_tag img.public_url
+        =image_tag img.public_url, class: 'gallery'
