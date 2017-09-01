@@ -3,7 +3,7 @@ title: "interactive/video"
 ---
 
 
-.vid
+.vid.item
   .desc
     %h1 lessForm, 2017 (with clay burton)
     %p
@@ -12,7 +12,7 @@ title: "interactive/video"
     =partial :vimeo_embed, :locals => {id: 223358891}
 
 
-.vid
+.vid.item
   .desc
     %h1 trans laser vol. 28, 2017 (with scallion jake)
     %p
@@ -20,16 +20,19 @@ title: "interactive/video"
   .player
     =partial :vimeo_embed, :locals => {id: 215382638}
 
-.vid
+.vid.item
   .desc
     %h1 untitled, 2016 (with megumi sabik)
     %p
       interactive video/browser art, shown at FOMO, an online exhibition
       =link_to 'source code on bitbucket.org', 'https://bitbucket.org/jrsa/fomo'
-  .player
-    =link_to '(opens in new window)', '/fomo'
+  %div
+    / =link_to '(opens in new window)', '/fomo'
+    %a{href: 'http://jrsa.co/fomo/', target: "_blank"}
+      =image_tag "http://jrsacocontent.s3.amazonaws.com/fomo.jpg"
+
     
-.vid
+.vid.item
   .desc
     %h1 wimb, 2014, video with audio synthesis
   .player
