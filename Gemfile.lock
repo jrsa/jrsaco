@@ -26,6 +26,7 @@ GEM
       sass (~> 3.4)
       thor (~> 0.19)
     builder (3.2.2)
+    coderay (1.1.1)
     coffee-script (2.4.1)
       coffee-script-source
       execjs
@@ -78,6 +79,7 @@ GEM
       rb-inotify (~> 0.9, >= 0.9.7)
     map (6.6.0)
     memoist (0.14.0)
+    method_source (0.8.2)
     middleman (4.1.9)
       coffee-script (~> 2.2)
       compass-import-once (= 1.0.5)
@@ -115,6 +117,9 @@ GEM
       em-websocket (~> 0.5.1)
       middleman-core (>= 3.3)
       rack-livereload (~> 0.3.15)
+    middleman-pry (1.0.1)
+      middleman (>= 3.3, < 5)
+      pry (~> 0.9)
     middleman-s3_sync (4.0.3)
       ansi (~> 1.5.0)
       fog-aws (>= 0.1.1)
@@ -142,15 +147,21 @@ GEM
     padrino-support (0.13.2)
       activesupport (>= 3.1)
     parallel (1.9.0)
+    pry (0.10.4)
+      coderay (~> 1.1.0)
+      method_source (~> 0.8.1)
+      slop (~> 3.4)
     rack (1.6.4)
     rack-livereload (0.3.16)
       rack
     rb-fsevent (0.9.7)
     rb-inotify (0.9.7)
       ffi (>= 0.5.0)
+    rb-readline (0.5.5)
     ruby-progressbar (1.8.1)
     sass (3.4.22)
     servolux (0.12.0)
+    slop (3.6.0)
     thor (0.19.1)
     thread_safe (0.3.5)
     tilt (1.4.1)
@@ -171,9 +182,11 @@ DEPENDENCIES
   bourbon
   middleman (>= 4.0.0)
   middleman-livereload
+  middleman-pry
   middleman-s3_sync
   mime-types
   neat
+  rb-readline
   tzinfo-data
   wdm (~> 0.1.0)
 

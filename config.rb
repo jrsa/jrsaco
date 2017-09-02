@@ -23,7 +23,11 @@ page '/*.txt', layout: false
 # Reload the browser automatically whenever files change
 configure :development do
   activate :livereload
+  activate :pry
 end
+
+activate :directory_indexes
+page "/error.html", :directory_index => false
 
 ###
 # Helpers
@@ -55,10 +59,10 @@ end
 # Build-specific configuration
 configure :build do
   # Minify CSS on build
-  # activate :minify_css
+  activate :minify_css
 
   # Minify Javascript on build
-  # activate :minify_javascript
+  activate :minify_javascript
 end
 
 activate :s3_sync do |s3_sync|
