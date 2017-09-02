@@ -106,7 +106,7 @@ header {
                 object-fit: cover;
                 object-position: center;
                 width: 100%;
-                // height: 66%;
+                height: 320px;
             }
         }
     }
@@ -118,7 +118,7 @@ header {
 
 #page_hello {
     height: 70%;
-    background: white url(https://jrsacocontent.s3.amazonaws.com/bg.png) no-repeat center center fixed;
+    background: white url(https://jrsacocontent.s3.amazonaws.com/bg.jpg) no-repeat center center fixed;
     background-size: cover;
 }
 
@@ -139,8 +139,8 @@ img {
 }
 
 img.gallery {
-    width: 49%;
-    height: 300px;
+    // width: 49%;
+    height: 50%;
 
 }
 
@@ -155,6 +155,7 @@ img.gallery {
 a {
     color: black;
     &:hover {
+        color: black;
         font-weight: bold;
         // text-shadow: 0.5px 0px 0px white, -0.5px 0px 0px white;
     }
