@@ -1,0 +1,12 @@
+.item
+    %h1
+        ="#{project.title} "
+    %h2
+        ="#{project.year} #{collaborators(project)}"
+    %p
+        =project.statement
+
+    -# -s3_imgs(project.title).each_with_index do |img, idx|
+    -#     .item  
+    -#         %a{href: img.public_url, target: "_blank"}
+    -#             =image_tag img.public_url, class: 'gallery'

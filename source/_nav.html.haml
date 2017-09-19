@@ -1,7 +1,4 @@
 %nav
   %ul
-    %li= nav_item "jrsa.co", "/" 
-    %li= nav_item "interactive/video", "/video/"
-    %li= nav_item "images", "/imgs/"
-    %li= nav_item "performances", "/performance/"
-
+    %li= nav_item current_page.url == "/" ? "jrsa.co" : "← jrsa.co", "/"
+    %li= nav_item "portfolio", "/projects/"

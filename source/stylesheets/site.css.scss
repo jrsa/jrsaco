@@ -1,47 +1,71 @@
 @charset "utf-8";
 
-@import "bourbon";
-@import "base/base"; // bitters
-@import "grid-settings";
+// responsive grid
 @import "neat";
 
-$mobile: new-breakpoint(max-width 800px 8);
+$grid: (
+  columns: 1,
+  gutter: 6rem,
+);
 
-$grad1: hsl(210, 100%, 66%);
-$grad2: hsl(180, 100%, 66%);
+$grid--tablet-up: (
+  columns: 12,
+  gutter: 2rem,
+  media: "(min-width: 900px)",
+);
+
+@import "bourbon";
+@import "base/base"; // bitters
+
+
+// goog fonts
+@import url('https://fonts.googleapis.com/css?family=Arvo|Dosis');
+
+$grad1: hsl(340, 100%, 66%);
+$grad2: hsl(310, 100%, 66%);
 
 body {
     background: linear-gradient(90deg, $grad1, $grad2);
     text-align: center;
     font-size: 1em;
-    overflow: hidden;
+    margin: 0px;
+    @include grid-media($grid--tablet-up) {
+        overflow: hidden;
+
+    }
+}
+
+h1, h2, h3, h4, h5, h6 {
+    font-family: 'Dosis', sans-serif;
 }
 
 .container {
     background-color: white;
-    border: 1px solid black;
-    margin: 10px;
-    padding: 10px;
     display: inline-block;
-    overflow: scroll;
-    max-height: 89%;
-
-    width: 80%;
-    @include media(max-width 668px) {
-        width: 100%;
-    }
+    width: 100%;
+    padding: 5px;
+    margin: 0px;
     
     &::-webkit-scrollbar {
         display: none;
     }
+    @include grid-media($grid--tablet-up) {
+        max-height: 89%;
+        // border: 1px solid black;
+        margin: 10px;
+        padding: 10px;
+        overflow: scroll;
+        width: 90vw;
+    }
 }
 
 
+// site navigation
 header {
-    @include outer-container;
+    @include grid-container;
 
     nav {
-        @include span-columns(12);
+        @include grid-column(12);
         ul {
             list-style: none;
             display: inline-block;
@@ -49,16 +73,7 @@ header {
         li  {
             display: inline-block;
             margin: 10px 10px 10px 0px;
-            a {
-                padding: 0.45em 0.7em;
-                text-decoration: none;
-                transition: all 0.1s linear;
-                &:hover {
-                    transition: all 0.15s cubic;
-                    background: black;
-                    color: white;
-                }
-            }
+
             .current {
                 &:hover {
                     background: inherit;
@@ -72,16 +87,71 @@ header {
 }
 
 .content {
-    @include outer-container;
+    @include grid-container;
 
     margin-top: 20px;
     margin-bottom: 20px;
 
+    .bio {
+        @include grid-column(12);
+        @include grid-media($grid--tablet-up) {
+            @include grid-column(6);
+        }
+    }
+
+
+    .links {
+        @include grid-column(12);
+        @include grid-media($grid--tablet-up) {
+            @include grid-column(6);
+        }
+    }
+
     .item {
-        @include outer-container;
-        margin: 20px 20px 50px 20px;
-        border-bottom: 1px solid black;
+        @include grid-container;
         padding-bottom: 20px;
+    }
+
+    .portfolio-grid {
+        img {
+            @include grid-column(12);
+            // height: 30%;
+            padding-bottom: 10px;
+            object-fit: scale-down;
+            object-position: center;
+            @include grid-media($grid--tablet-up) {
+                @include grid-column(3);
+                height: 35%;
+                transition: all 0.64s linear;
+                &:hover {
+                    transform: rotate3d(0, 1, 2, 900deg);
+                }
+            }
+        }
+
+    }
+
+    .project {
+        margin-bottom: 10px;
+        @include grid-column(6);
+        height: 20%;
+        // object-fit: cover;
+        // object-position: center;
+        background: linear-gradient(90deg, $grad1, $grad2);
+        @include grid-media($grid--tablet-up) {
+            @include grid-column(3);
+
+        }
+
+        position: relative;
+
+        .label {
+            position: absolute;
+            bottom: 5;
+            left: 5;
+            color: white;
+            text-shadow: 1px 1px 1px #000;
+        }
     }
 
     .desc {
@@ -90,17 +160,16 @@ header {
 
     .vid {
         .desc {
-            @include span-columns(4);
-            @include media($mobile) {
-                @include span-columns(8);        
+            @include grid-column(12);        
+            @include grid-media($grid--tablet-up) {
+                @include grid-column(4);
             }
         }
         .player {
-            @include span-columns(8);
-
-            // @include media($mobile) {
-            //     @include span-columns(8);        
-            // }
+            @include grid-column(12);
+            @include grid-media($grid--tablet-up) {
+                @include grid-column(8);
+            }
 
             iframe {
                 object-fit: cover;
@@ -111,15 +180,28 @@ header {
         }
     }
     .img {
-        // @include span-columns(2);
         margin-bottom: 5px;
     }
 }
 
 #page_hello {
-    height: 70%;
-    background: white url(https://jrsacocontent.s3.amazonaws.com/bg.jpg) no-repeat center center fixed;
-    background-size: cover;
+    color: white;
+    a {
+        color: white;
+    }
+    .container {
+        background: rgba(0.1, 0.1, 0.1, 0.5);
+    }
+
+    canvas {
+        background: white;
+        position: absolute;
+        top:0;
+        left:0;
+        z-index:-1;
+        width:100%;
+        height:100%;
+    }
 }
 
 footer {
@@ -136,16 +218,8 @@ img {
     object-position: center;
     display: inline;
     margin: auto;
-}
 
-img.gallery {
-    // width: 49%;
-    height: 50%;
-
-}
-
-@include media(max-width 668px) {
-    img {
+    @include grid-media($grid--tablet-up) {
         width: 100%;
         display: inline;
         margin-bottom: 5px;
@@ -154,10 +228,24 @@ img.gallery {
 
 a {
     color: black;
+    padding: 0.45em 0.7em;
+    text-decoration: none;
+    transition: all 0.1s linear;
     &:hover {
-        color: black;
         font-weight: bold;
-        // text-shadow: 0.5px 0px 0px white, -0.5px 0px 0px white;
+        transition: all 0.15s cubic;
+        background: black;
+        color: white;
     }
+}
+
+#sketch {
+    z-index: -2;
+    position:absolute;
+    top:0;
+    left:0;
+    z-index:0;
+    width:100%;
+    height:100%;
 }
 

@@ -25,4 +25,4 @@ gem 'mime-types'
 # hipster sass shit
 gem 'bitters'
 gem 'bourbon'
-gem 'neat'
+gem 'neat', '>= 2.0.0'

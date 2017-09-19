@@ -1,10 +1,24 @@
 {
     "projects": [
         {
+            "type": "video",
+            "title": "revision forever",
+            "year": 2017
+        },
+        {
             "type": "interactive",
             "title": "auto2",
             "year": 2017,
             "link": "http://jrsa.co/auto2/"
+        },
+        {
+            "type": "interactive",
+            "title": "goop",
+            "year": 2017,
+            "link": "http://clickbecause.net/goop/",
+            "collaborators": [
+                "mike leisz"
+            ]
         },
         {
             "type": "video",
@@ -21,7 +35,7 @@
             "title": "trans laser volume 28",
             "year": 2017,
             "collaborators": [
-                "scallion jake"
+                "chloe scallion"
             ],
             "statement": "analog processed video, with modular soundtrack",
             "vimeo": 215382638

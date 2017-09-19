@@ -29,6 +29,12 @@ end
 activate :directory_indexes
 page "/error.html", :directory_index => false
 
+# dynamic pages for each project
+data.projects.projects.each do |p|
+    slug = p.title.downcase.gsub(/\s+/, "")
+    proxy "/projects/#{slug}/index.html", "/project.html", locals: { project: p }, ignore: true
+end
+
 ###
 # Helpers
 ###
@@ -36,6 +42,27 @@ page "/error.html", :directory_index => false
 
 # Methods defined in the helpers block are available in templates
 helpers do
+
+    def project_slug p
+        p.title.downcase.gsub(/\s+/, "")
+    end
+
+    def project_link p
+        "/projects/#{project_slug(p)}/"
+    end
+
+    def collaborators p
+        p.collaborators.nil? ? "" : "with #{p.collaborators.join(", ")}"
+    end
+
+    def project_thumb p
+      img = s3_imgs(project_slug(p)).first
+      img.nil? ? "" : img.public_url
+    end
+
+    def thumb_url img_url
+      img_url.gsub('full', 'thumb')
+    end
 
   def s3_imgs match
     bucket_name = 'jrsacocontent'
