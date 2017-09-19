@@ -14,9 +14,9 @@ title: "interactive/video"
 
 .vid.item
   .desc
-    %h1 trans laser vol. 28, 2017 (with scallion jake)
+    %h1 trans laser vol. 28, 2017 (with scallion chloe)
     %p
-      analog processed video with scallion jake, soundtrack by me
+      analog processed video with scallion chloe, soundtrack by me
   .player
     =partial :vimeo_embed, :locals => {id: 215382638}
 
@@ -26,7 +26,7 @@ title: "interactive/video"
     %p
       interactive video/browser art, shown at FOMO, an online exhibition
       =link_to 'source code on bitbucket.org', 'https://bitbucket.org/jrsa/fomo'
-  %div
+  .player
     / =link_to '(opens in new window)', '/fomo'
     %a{href: 'http://jrsa.co/fomo/', target: "_blank"}
       =image_tag "http://jrsacocontent.s3.amazonaws.com/fomo.jpg"
