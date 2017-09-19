@@ -1,184 +1,142 @@
-var gl, baseTexture, canvas, fbo, feedback;
-var blur, goop, normal, emboss, contrast, render;
-var drySignal;
+(function(w, d) {
+    var gl, baseTexture, canvas, fbo, feedback;
+    var blur, goop, normal, emboss, contrast, render;
+    var drySignal;
 
-var baseProgram, feedbackProgram;
-var blurProgram, goopProgram, normalProgram, embossProgram, contrastProgram;
+    var baseProgram, feedbackProgram;
+    var blurProgram, goopProgram, normalProgram, embossProgram, contrastProgram;
 
-var baseVs, baseFs, feedbackFs, translateVs;
-var blurFs, goopFs, normalFs, embossFs, contrastFs;
+    var baseVs, baseFs, feedbackFs, translateVs;
+    var blurFs, goopFs, normalFs, embossFs, contrastFs;
 
-var imgTex, renderTex;
+    var imgTex, renderTex;
 
-var mvx = 0.0;
-var mvy = 0.0;
+    var mvx = 1.;
+    var mvy = 1.;
 
-canvas = document.createElement("canvas");
-document.body.appendChild(canvas);
-canvas.width = window.innerWidth;
-canvas.height = window.innerHeight;
+    canvas = d.createElement("canvas");
+    d.body.appendChild(canvas);
+    canvas.width = w.innerWidth;
+    canvas.height = w.innerHeight;
 
-document.addEventListener('mousedown', function(e) {
-    getNewImg();
-}, false);
+    d.addEventListener('mousemove', function(e) {
+        mvx = map(e.clientX, 0, w.innerWidth, 0.0, 1.0);
+        mvy = map(e.clientY, 0, w.innerHeight, 0.0, 1.0);
+    }, false);
 
-document.addEventListener('mousemove', function(e) {
-    mvx = map(e.clientX, 0, window.innerWidth, 0.98, 1.1);
-    mvy = map(e.clientY, 0, window.innerHeight, 0.98, 1.1);
-}, false);
+    // w.addEventListener('resize', function(e) {
 
-// create backing canvas
-var backCanvas = document.createElement('canvas');
-backCanvas.width = canvas.width;
-backCanvas.height = canvas.height;
-var backCtx = backCanvas.getContext('2d');
+    // }, true);
 
-// Create gradient
-var grd = backCtx.createRadialGradient(canvas.width/2, canvas.height/2, 5, canvas.width, canvas.height, canvas.width);
-grd.addColorStop(0., "red");
-grd.addColorStop(.1, "yellow");
-grd.addColorStop(.2, "green");
-grd.addColorStop(.4, "blue");
-grd.addColorStop(1., "purple");
-// Fill with gradient
-backCtx.fillStyle = grd;
-backCtx.fillRect(0, 0, canvas.width, canvas.height);
+    // create backing canvas
+    var backCanvas = d.createElement('canvas');
+    backCanvas.width = canvas.width;
+    backCanvas.height = canvas.height;
+    var backCtx = backCanvas.getContext('2d');
 
-var dataURL = backCanvas.toDataURL();
+    // Create gradient
+    var grd = backCtx.createLinearGradient(canvas.width / 2, canvas.height / 2, 5, canvas.width, canvas.height, canvas.width);
+    grd.addColorStop(0., "red");
+    // grd.addColorStop(.1, "yellow");
+    // grd.addColorStop(.2, "green");
+    grd.addColorStop(.5, "blue");
+    grd.addColorStop(1., "purple");
+    // Fill with gradient
+    backCtx.fillStyle = grd;
+    backCtx.fillRect(0, 0, canvas.width, canvas.height);
 
-var img = new Image();
-img.src = dataURL;
-img.onload = function(){
-  imageLoaded = true;
-  getImgAsTexture();
-  getNewImg();
-  loop();
-}
+    var dataURL = backCanvas.toDataURL();
 
-initGl();
-initFbosAndShaders();
+    var img = new Image();
+    // img.src = "data:image/gif;base64,R0lGODlhAQABAIAAAMLCwgAAACH5BAAAAAAALAAAAAABAAEAAAICRAEAOw==";
+    img.src = dataURL;
+    img.onload = function() {
+        getImgAsTexture();
+        getNewImg();
+        loop();
+    };
 
-function initGl(){
-    gl = getWebGLContext(canvas);
+    initGl();
+    initFbosAndShaders();
 
-    gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
-    gl.enable(gl.BLEND);
-}
+    function initGl() {
+        gl = getWebGLContext(canvas);
 
-function initFbosAndShaders(){
-    baseTexture = new pxBB();
-    fbo = new pxFbo();
-    feedback = new pxFbo();
+        gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
+        gl.enable(gl.BLEND);
+    }
 
-    drySignal = new pxBB();
-    renderTex = new pxBB();
+    function initFbosAndShaders() {
+        baseTexture = new pxBB(gl);
+        fbo = new pxFbo(gl);
+        feedback = new pxFbo(gl);
 
-    blur = new pxFbo();
-    goop = new pxFbo();
-    normal = new pxFbo();
-    contrast = new pxFbo();
-    emboss = new pxFbo();
-    render = new pxFbo();
+        drySignal = new pxBB(gl);
+        renderTex = new pxBB(gl);
 
-    //set up fbo's
-    fbo.allocate(canvas.width, canvas.height);
-    feedback.allocate(canvas.width, canvas.height);
+        blur = new pxFbo(gl);
+        goop = new pxFbo(gl);
+        normal = new pxFbo(gl);
+        contrast = new pxFbo(gl);
+        emboss = new pxFbo(gl);
+        render = new pxFbo(gl);
 
-    blur.allocate(canvas.width, canvas.height);
-    goop.allocate(canvas.width, canvas.height);
-    normal.allocate(canvas.width, canvas.height);
-    emboss.allocate(canvas.width, canvas.height);
-    contrast.allocate(canvas.width, canvas.height);
-    render.allocate(canvas.width, canvas.height);
+        //set up fbo's
+        fbo.allocate(canvas.width, canvas.height);
+        feedback.allocate(canvas.width, canvas.height);
 
-    //create shaders
-    baseVs = createShaderFromScriptElement(gl, "baseVs");
-    translateVs = createShaderFromScriptElement(gl, "translateVs");
-    baseFs = createShaderFromScriptElement(gl, "baseFs");
-    feedbackFs = createShaderFromScriptElement(gl, "feedbackFs");
+        blur.allocate(canvas.width, canvas.height);
+        goop.allocate(canvas.width, canvas.height);
+        render.allocate(canvas.width, canvas.height);
 
-    blurFs = createShaderFromScriptElement(gl, "blurFs");
-    goopFs = createShaderFromScriptElement(gl, "goopFs");
-    normalFs = createShaderFromScriptElement(gl, "normalFs");
-    embossFs = createShaderFromScriptElement(gl, "embossFs");
-    contrastFs = createShaderFromScriptElement(gl, "contrastFs");
+        baseVs = createShaderFromScriptElement(gl, "baseVs");
+        baseFs = createShaderFromScriptElement(gl, "baseFs");
+        blurFs = createShaderFromScriptElement(gl, "blurFs");
+        goopFs = createShaderFromScriptElement(gl, "goopFs");
 
-    //create program
-    baseProgram = createProgram(gl, [baseVs, baseFs]);
-    feedbackProgram = createProgram(gl, [baseVs, feedbackFs]);
+        baseProgram = createProgram(gl, [baseVs, baseFs]);
+        blurProgram = createProgram(gl, [baseVs, blurFs]);
+        goopProgram = createProgram(gl, [baseVs, goopFs]);
+    }
 
-    blurProgram = createProgram(gl, [translateVs, blurFs]);
-    goopProgram = createProgram(gl, [baseVs, goopFs]);
-    normalProgram = createProgram(gl, [baseVs, normalFs]);
-    embossProgram = createProgram(gl, [baseVs, embossFs]);
-    contrastProgram = createProgram(gl, [baseVs, contrastFs]);
-}
+    function loop() {
+        w.requestAnimationFrame(loop);
 
-//DRAW JAVASCRIPT
+        goop.start();
+        gl.useProgram(goopProgram);
+        gl.uniform2f(gl.getUniformLocation(goopProgram, "mouse_vert"), mvx, mvy);
+        feedback.draw(goopProgram);
 
-function loop(){
-    window.requestAnimationFrame(loop);
+        blur.start();
+        gl.useProgram(blurProgram);
+        gl.uniform2f(gl.getUniformLocation(blurProgram, "resolution"), canvas.width, canvas.height);
+        goop.draw(blurProgram);
 
-    goop.start();
+        render.start();
+        gl.useProgram(baseProgram);
+        blur.draw(baseProgram);
 
-    gl.useProgram(goopProgram);
+        feedback.start();
+        render.draw(baseProgram);
 
-    feedback.draw(goopProgram);
-
-    blur.start();
-
-    gl.useProgram(blurProgram);
-
-    gl.uniform2f(gl.getUniformLocation(blurProgram, "resolution"), canvas.width, canvas.height);
-    gl.uniform2f(gl.getUniformLocation(blurProgram, "mouse_vert"), mvx, mvy);
-
-    goop.draw(blurProgram);
-
-    render.start();
-
-    gl.useProgram(feedbackProgram);
-
-    gl.uniform2f(gl.getUniformLocation(feedbackProgram, "resolution"), canvas.width, canvas.height);
-
-    blur.draw(feedbackProgram);
-
-    //return fbo to itself
-    feedback.start();
-    render.draw(baseProgram);
-
-    normal.start();
-
-    gl.useProgram(normalProgram);
-    gl.uniform2f(gl.getUniformLocation(normalProgram, "resolution"), canvas.width, canvas.height);
-
-    blur.draw(normalProgram);
-
-    emboss.start();
+        gl.bindFramebuffer(gl.FRAMEBUFFER, null);
+        feedback.draw(baseProgram);
+    }
 
 
-    blur.draw2(embossProgram, normal.texture);
+    function getImgAsTexture() {
+        imgTex = createAndSetupTexture(gl);
+        imgTex.image = img;
+        gl.bindTexture(gl.TEXTURE_2D, imgTex);
+        gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, imgTex.image);
+    }
 
-    gl.bindFramebuffer(gl.FRAMEBUFFER, null);
-    emboss.draw(baseProgram);
-}
+    function getNewImg() {
+        feedback.start();
+        baseTexture.draw(baseProgram, imgTex);
+    }
 
-//UTILS JAVASCRIPT
-
-function getImgAsTexture(){
-  //create camera texture
-  imgTex = createAndSetupTexture(gl);
-  imgTex.image = img;
-  gl.bindTexture(gl.TEXTURE_2D, imgTex);
-  gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, imgTex.image);
-}
-
-function getNewImg(){
-   //gets a new frame
-   feedback.start();
-   baseTexture.draw(baseProgram, imgTex);
-}
-
-function map(value, low1, high1, low2, high2) {
-    return low2 + (high2 - low2) * (value - low1) / (high1 - low1);
-}
-
+    function map(value, low1, high1, low2, high2) {
+        return low2 + (high2 - low2) * (value - low1) / (high1 - low1);
+    }
+})(window, document)

@@ -2,10 +2,180 @@
 title: "hello"
 ---
 .content
-    %p 
-        james anderson is an artist based in los angeles, ca, usa. he works in music and interactive media.
-    %p
-        =link_to 'contact via email', 'mailto:jrsa@jrsa.co'
-    %p
-        =link_to '@jrsa on github', 'https://github.com/jrsa'
+    .bio
+        james anderson is an artist and software developer based in los angeles, ca, usa.
+    .links
+        %p
+            =link_to 'portfolio', '/projects/'    
+        %p
+            =link_to 'email: jrsa at jrsa dot co', 'mailto:jrsa@jrsa.co'
+        %p
+            =link_to '@_innernet on instagram', 'instagram.com/_innernet'
+        %p
+            =link_to '@jrsa on github', 'https://github.com/jrsa'
 
+    %script{id: "baseVs", type: "x-shader/x-vertex"}
+        :plain
+            attribute vec3 pos;
+            attribute vec4 color;
+            attribute vec2 texcoord;
+
+            varying vec2 v_texCoord;
+            varying vec4 vColor;
+
+            void main() {
+                gl_Position = vec4(pos.x, pos.y, pos.z, 1.0);
+                v_texCoord = texcoord;
+                vColor = color;
+            }
+
+    %script{id: "baseFs", type: "x-shader/x-fragment"}
+        :plain
+            precision highp float;
+            uniform sampler2D u_image;
+            varying vec2 v_texCoord;
+
+            void main() {
+                vec4 color = texture2D(u_image, v_texCoord);
+                gl_FragColor = color;
+            }
+
+    %script{id: "blurFs",  type: "x-shader/x-fragment"}
+        :plain
+            precision highp float;
+            precision highp int;
+
+            uniform sampler2D u_image;
+            uniform vec2 resolution;
+
+            varying vec2 v_texCoord;
+
+            void main() {
+                vec2 offset[9];
+                float kernel[9];
+
+                float step_w = 1.0/resolution.x;
+                float step_h = 1.0/resolution.y;
+
+                offset[0] = vec2(-step_w, -step_h);
+                offset[1] = vec2(0.0, -step_h);
+                offset[2] = vec2(step_w, -step_h);
+                offset[3] = vec2(-step_w, 0.0);
+                offset[4] = vec2(0.0, 0.0);
+                offset[5] = vec2(step_w, 0.0);
+                offset[6] = vec2(-step_w, step_h);
+                offset[7] = vec2(0.0, step_h);
+                offset[8] = vec2(step_w, step_h);
+
+                kernel[0] =  1.0; kernel[1] = 2.0; kernel[2] =  1.0;
+                kernel[3] =  2.0; kernel[4] = 4.0; kernel[5] =  2.0;
+                kernel[6] =  1.0; kernel[7] = 2.0; kernel[8] =  1.0;
+
+                vec4 sum = vec4(0.0);
+                for (int i = 0; i < 9; i++) {
+                    vec4 color = texture2D(u_image, v_texCoord + offset[i]);
+                    sum += color * kernel[i];
+                }
+
+                sum /= 16.0;
+
+                gl_FragColor = vec4(sum.rgb, 1.0);
+            }
+
+    %script{id: "goopFs", type: "x-shader/x-fragment"}
+        :plain
+            precision highp float;
+            precision highp int;
+
+            uniform vec2 mouse_vert;
+
+            vec3 rgb2hsv(vec3 c)
+            {
+                vec4 K = vec4(0.0, -1.0 / 3.0, 2.0 / 3.0, -1.0);
+                vec4 p = mix(vec4(c.bg, K.wz), vec4(c.gb, K.xy), step(c.b, c.g));
+                vec4 q = mix(vec4(p.xyw, c.r), vec4(c.r, p.yzx), step(p.x, c.r));
+
+                float d = q.x - min(q.w, q.y);
+                float e = 1.0e-10;
+                return vec3(abs(q.z + (q.w - q.y) / (6.0 * d + e)), d / (q.x + e), q.x);
+            }
+
+            vec3 hsv2rgb(vec3 c)
+            {
+                vec4 K = vec4(1.0, 2.0 / 3.0, 1.0 / 3.0, 3.0);
+                vec3 p = abs(fract(c.xxx + K.xyz) * 6.0 - K.www);
+                return c.z * mix(K.xxx, clamp(p - K.xxx, 0.0, 1.0), c.y);
+            }
+
+            uniform sampler2D u_image;
+            varying vec2 v_texCoord;
+
+            void main() {
+                vec2 tc = v_texCoord;
+                vec4 color = vec4(0.0);
+
+                // constant zoom/rotate
+                float scale_factor = 0.995;
+                float fixangle = 0.001;
+                float mouse_scale_amt = 0.004;
+                tc -= vec2(0.5);
+                tc *= mat2(scale_factor + (mouse_vert.x * mouse_scale_amt), 0.0, 0.0, scale_factor + (mouse_vert.y * mouse_scale_amt));
+                tc *= mat2(cos(fixangle), sin(fixangle), -sin(fixangle), cos(fixangle));
+                tc += vec2(0.5);
+
+                // zoom/rotate based on hue/saturation
+                vec3 pixel = texture2D(u_image, tc).rgb;
+                vec3 s = rgb2hsv(pixel);
+
+                float angle = ((tc.s + 0.4) * 0.04) * ((s.r * s.g) - 0.5);
+                angle *= 0.275;
+
+                tc -= vec2(0.5);
+                tc *= mat2(cos(angle), sin(angle), -sin(angle), cos(angle));
+                tc += vec2(0.5);
+
+                float xscale = 1. - (-s.r * 0.009);
+                float yscale = 1. - ( s.g * 0.009);
+
+                tc -= vec2(0.5);
+                tc *= mat2(xscale, 0., 0., yscale);
+                tc += vec2(0.5);
+
+                // these aren't too different...
+                float d = dot(s.bg, tc);
+                float e = dot(s.rb, tc.ts);
+                d = length(s.bg);
+                // d = 1.0;
+
+                // get a neighboring pixel based on the above value
+                vec4 prelook = texture2D(u_image, tc + (d * 0.3));
+                
+                // don't look at me, idk man
+                d *= prelook.b;
+                d += length(prelook) / mouse_vert.x;
+                d -= length(s) / mouse_vert.y;
+
+                // final texture sample
+                vec4 bc_out = texture2D(u_image, tc + (d * 0.001)) * ((d * 0.001) + 1.0);
+
+                // shift hue and saturation
+                vec3 shift = s;
+                // shift.r += (1/20);
+                shift.g += (d * 0.08);
+
+                // mix between the shifted and repositioned values
+                float q = 40.0 * (-s.g);
+                color += mix(bc_out, vec4(hsv2rgb(shift), 1.0), 0.6 - (floor(s.g * q))/q);
+
+                // spatial differencing using intermediate pixel value (`prelook`)
+                color += 0.005;
+                // color *= 1.005;
+                color *= .99 + (e * .015); 
+                color -= (prelook * 0.01);
+
+                gl_FragColor = color;
+            }
+
+    =javascript_include_tag :fbo_texture_utils
+    =javascript_include_tag :webgl_utils
+    =javascript_include_tag :goop, :async => true

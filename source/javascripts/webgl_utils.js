@@ -34,7 +34,7 @@
 // These funcitions are meant solely to help unclutter the tutorials.
 // They are not meant as production type functions.
 
-//(function() {
+(function() {
 
 /**
  * Wrapped logging function.
@@ -199,10 +199,12 @@ var getWebGLContext = function(canvas, opt_attribs, opt_options) {
       canvas.height = height;
     }
   } else {
-    var title = document.title;
-    var h1 = document.createElement("h1");
-    h1.innerText = title;
-    document.body.insertBefore(h1, document.body.children[0]);
+    // NO NO NO NO NO
+    // WHY WOULD YOU DO THIS AND THEN MAKE ME FUCKING ROOT AROUND FOR WHATEVERS PUTTING BS TEXT IN MY PAGE
+    // var title = document.title;
+    // var h1 = document.createElement("h1");
+    // h1.innerText = title;
+    // document.body.insertBefore(h1, document.body.children[0]);
   }
 
   var gl = setupWebGL(canvas, opt_attribs);
@@ -693,4 +695,4 @@ window.setupWebGL = setupWebGL;
 window.requestAnimFrame = window.requestAnimationFrame;       // just to stay backward compatible.
 window.cancelRequestAnimFrame = window.cancelAnimationFrame;  // just to stay backward compatible.
 
-//}());
+}());
