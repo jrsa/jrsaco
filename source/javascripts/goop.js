@@ -11,8 +11,8 @@
 
     var imgTex, renderTex;
 
-    var mvx = 1.;
-    var mvy = 1.;
+    var mvx = .08;
+    var mvy = .06;
 
     canvas = d.createElement("canvas");
     d.body.appendChild(canvas);
@@ -20,13 +20,14 @@
     canvas.height = w.innerHeight;
 
     d.addEventListener('mousemove', function(e) {
-        mvx = map(e.clientX, 0, w.innerWidth, 0.0, 1.0);
-        mvy = map(e.clientY, 0, w.innerHeight, 0.0, 1.0);
+        mvx = map(e.clientX, 0, w.innerWidth, 0.1, .90);
+        mvy = map(e.clientY, 0, w.innerHeight, 0.1, .90);
+        console.log(mvx, mvy)
     }, false);
 
-    // w.addEventListener('resize', function(e) {
-
-    // }, true);
+    w.addEventListener('resize', function(e) {
+        gl.viewport(0, 0, canvas.width, canvas.height)
+    }, true);
 
     // create backing canvas
     var backCanvas = d.createElement('canvas');

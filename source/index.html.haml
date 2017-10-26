@@ -3,16 +3,20 @@ title: "hello"
 ---
 .content
     .bio
-        james anderson is an artist and software developer based in los angeles, ca, usa.
-    .links
+        %h1
+            hello!
         %p
-            =link_to 'portfolio', '/projects/'    
+            james anderson is an artist and software developer based in los angeles, ca, usa.
+
+    .links
         %p
             =link_to 'email: jrsa at jrsa dot co', 'mailto:jrsa@jrsa.co'
         %p
-            =link_to '@_innernet on instagram', 'instagram.com/_innernet'
+            =link_to '@_innernet on instagram', 'https://instagram.com/_innernet'
         %p
             =link_to '@jrsa on github', 'https://github.com/jrsa'
+
+        #test
 
     %script{id: "baseVs", type: "x-shader/x-vertex"}
         :plain
@@ -47,6 +51,7 @@ title: "hello"
 
             uniform sampler2D u_image;
             uniform vec2 resolution;
+            uniform vec2 mouse_vert;
 
             varying vec2 v_texCoord;
 
@@ -117,9 +122,9 @@ title: "hello"
                 // constant zoom/rotate
                 float scale_factor = 0.995;
                 float fixangle = 0.001;
-                float mouse_scale_amt = 0.004;
+                float mouse_scale_amt = 0.00;
                 tc -= vec2(0.5);
-                tc *= mat2(scale_factor + (mouse_vert.x * mouse_scale_amt), 0.0, 0.0, scale_factor + (mouse_vert.y * mouse_scale_amt));
+                tc *= mat2(scale_factor, 0.0, 0.0, scale_factor);
                 tc *= mat2(cos(fixangle), sin(fixangle), -sin(fixangle), cos(fixangle));
                 tc += vec2(0.5);
 
@@ -148,7 +153,7 @@ title: "hello"
                 // d = 1.0;
 
                 // get a neighboring pixel based on the above value
-                vec4 prelook = texture2D(u_image, tc + (d * 0.3));
+                vec4 prelook = texture2D(u_image, tc + (d * 0.49));
                 
                 // don't look at me, idk man
                 d *= prelook.b;
@@ -160,7 +165,6 @@ title: "hello"
 
                 // shift hue and saturation
                 vec3 shift = s;
-                // shift.r += (1/20);
                 shift.g += (d * 0.08);
 
                 // mix between the shifted and repositioned values
@@ -169,7 +173,6 @@ title: "hello"
 
                 // spatial differencing using intermediate pixel value (`prelook`)
                 color += 0.005;
-                // color *= 1.005;
                 color *= .99 + (e * .015); 
                 color -= (prelook * 0.01);
 
