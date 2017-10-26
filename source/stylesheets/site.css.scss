@@ -105,11 +105,11 @@ header {
         @include grid-media($grid--tablet-up) {
             @include grid-column(6);
         }
+        line-height: 50px;
     }
 
-    .item {
-        @include grid-container;
-        padding-bottom: 20px;
+    .gridlink {
+        background: none;
     }
 
     .portfolio-grid {
@@ -143,12 +143,9 @@ header {
 
         }
 
-        position: relative;
+        // position: relative;
 
         .label {
-            position: absolute;
-            bottom: 5;
-            left: 5;
             color: white;
             text-shadow: 1px 1px 1px #000;
         }

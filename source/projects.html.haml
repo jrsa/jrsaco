@@ -2,12 +2,12 @@
 -#    .img-grid
 -#        -projects_row.each do |project|
 -data.projects.projects.each do |project|
-    %a{href: project_link(project)}
+    %a{href: project_link(project), class: "gridlink"}
         .project{style: "background-image: url(#{project_thumb(project)}); background-size: cover;"}
             %h1.label 
                 ="#{project.title}, #{project.year}"
 
 -s3_imgs("profile2017/full").each do |img|
-    %a{href: img.public_url, target: "_blank"}
+    %a{href: img.public_url, target: "_blank", class: "gridlink"}
         .project{style: "background-image: url(#{thumb_url(img.public_url)}); background-size: cover;"}
 
