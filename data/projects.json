@@ -3,7 +3,11 @@
         {
             "type": "video",
             "title": "revision forever",
-            "year": 2017
+            "year": 2017,
+            "statement": "Revision Forever is a single channel fixed media render featuring multiple revised histories, overgrown surface illustrations, and 256 cores. Shown at Impossi*ball, a presentation of the Immersion Group at California Institute of the Arts.",
+            "collaborators": [
+                "mike leisz"
+            ]
         },
         {
             "type": "interactive",
@@ -73,7 +77,7 @@
             "type": "performance",
             "title": "translation",
             "year": 2015,
-            "statement": "i did a performance where i sat at a desk and pretended to work on a computer, with no screen. i typed on a keyboard, which controlled a music synthesis program on a hidden computer. the ascii key codes were mapped to sequential midi notes.",
+            "statement": "a performance where i sat at a desk and pretended to work on a computer, with no screen. i typed on a keyboard, which controlled a music synthesis program on a hidden computer. the ascii key codes were mapped to sequential midi notes.",
             "vimeo": 169909316
         },
         {
