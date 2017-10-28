@@ -29,10 +29,12 @@ end
 activate :directory_indexes
 page "/error.html", :directory_index => false
 
+page "projects.html", layout: false
+
 # dynamic pages for each project
 data.projects.projects.each do |p|
     slug = p.title.downcase.gsub(/\s+/, "")
-    proxy "/projects/#{slug}/index.html", "/project.html", locals: { project: p }, ignore: true
+    proxy "/projects/#{slug}/index.html", "/project.html", locals: { project: p }, ignore: true, layout: false
 end
 
 ###
