@@ -35,6 +35,9 @@ data.projects.projects.each do |p|
     proxy "/projects/#{slug}/index.html", "/project.html", locals: { project: p }, ignore: true
 end
 
+activate :blog do |blog|
+end
+
 ###
 # Helpers
 ###
