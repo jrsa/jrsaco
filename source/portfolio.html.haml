@@ -1,0 +1,16 @@
+%canvas#sketch
+.item
+-data.projects.projects.each do |project|
+    %a{href: project.link, target: "_blank"}
+        .item{style: "background-image: url(#{project_thumb(project)});"}
+            .description
+                %h1 
+                    ="#{project.title}, #{project.year}"
+                %h2
+                    ="#{project.type}"
+
+                - if not project.collaborators.nil?
+                    %p
+                        =collaborators(project)
+
+=partial :goopsketch

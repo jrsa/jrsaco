@@ -1,0 +1,13 @@
+%html
+  %head
+    %title james anderson - portfolio
+
+    =stylesheet_link_tag :portfolio, :async => true
+    %meta{name: "viewport", content: "width=device-width, initial-scale=1"}
+  %body{id: ["page", current_page.data.title]}
+    .container
+      =yield
+
+      .information.description
+        %h1 james r. s. anderson
+        %h2 programmer & artist    

@@ -35,6 +35,10 @@ data.projects.projects.each do |p|
     proxy "/projects/#{slug}/index.html", "/project.html", locals: { project: p }, ignore: true
 end
 
+# new portfolio
+page "/portfolio.html", layout: "portfolio"
+page "/index.html", layout: "portfolio"
+
 ###
 # Helpers
 ###

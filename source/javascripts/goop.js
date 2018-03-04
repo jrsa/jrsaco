@@ -1,29 +1,49 @@
 (function(w, d) {
     var gl, baseTexture, canvas, fbo, feedback;
-    var blur, goop, normal, emboss, contrast, render;
-    var drySignal;
+    var blur, goop, render;
 
-    var baseProgram, feedbackProgram;
-    var blurProgram, goopProgram, normalProgram, embossProgram, contrastProgram;
-
-    var baseVs, baseFs, feedbackFs, translateVs;
-    var blurFs, goopFs, normalFs, embossFs, contrastFs;
+    var baseProgram, blurProgram, goopProgram;
+    var baseVs, baseFs, feedbackFs, blurFs, goopFs;
 
     var imgTex, renderTex;
 
+    var animationFrameId;
+
     var mvx = .08;
     var mvy = .06;
+    canvas = d.getElementById("sketch");
 
-    canvas = d.createElement("canvas");
-    d.body.appendChild(canvas);
+    // i think if this ran in after the dom is ready it would already be the right size
+    // it initializes all the GL stuff to some small size and then just draws the canvas
+    // bigger after it figures out what size it will be, stretching the framebuffer contents
     canvas.width = w.innerWidth;
     canvas.height = w.innerHeight;
 
     d.addEventListener('mousemove', function(e) {
-        mvx = map(e.clientX, 0, w.innerWidth, 0.1, .90);
-        mvy = map(e.clientY, 0, w.innerHeight, 0.1, .90);
-        console.log(mvx, mvy)
+        mvx = map(e.clientX, 0, w.innerWidth, 0.0, 1.0);
+        mvy = map(e.clientY, 0, w.innerHeight, 1.0, 0.0);
     }, false);
+
+    d.addEventListener('scroll', function(e) {
+        var scroll = w.scrollY;
+        var cHeight = canvas.height;
+
+        gl.useProgram(goopProgram);
+        gl.uniform1f(gl.getUniformLocation(goopProgram, "u_scroll"), scroll / cHeight);
+/*
+        if (scroll > cHeight) {
+            console.log("stopping webGL animation")
+
+            w.cancelAnimationFrame(animationFrameId);
+            animationFrameId = 0;
+        } else {
+            if (animationFrameId === 0) {
+                console.log("resuming webGL animation")
+                loop();
+            }
+        }
+*/
+    })
 
     w.addEventListener('resize', function(e) {
         gl.viewport(0, 0, canvas.width, canvas.height)
@@ -34,7 +54,7 @@
     backCanvas.width = canvas.width;
     backCanvas.height = canvas.height;
     var backCtx = backCanvas.getContext('2d');
-
+/*
     // Create gradient
     var grd = backCtx.createLinearGradient(canvas.width / 2, canvas.height / 2, 5, canvas.width, canvas.height, canvas.width);
     grd.addColorStop(0., "red");
@@ -45,13 +65,15 @@
     // Fill with gradient
     backCtx.fillStyle = grd;
     backCtx.fillRect(0, 0, canvas.width, canvas.height);
-
+*/
     var dataURL = backCanvas.toDataURL();
 
     var img = new Image();
     // img.src = "data:image/gif;base64,R0lGODlhAQABAIAAAMLCwgAAACH5BAAAAAAALAAAAAABAAEAAAICRAEAOw==";
     img.src = dataURL;
     img.onload = function() {
+        console.log("img.onload");
+
         getImgAsTexture();
         getNewImg();
         loop();
@@ -61,6 +83,7 @@
     initFbosAndShaders();
 
     function initGl() {
+        console.log("init")
         gl = getWebGLContext(canvas);
 
         gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
@@ -68,18 +91,17 @@
     }
 
     function initFbosAndShaders() {
+        console.log("initFbosAndShaders");
+
+
         baseTexture = new pxBB(gl);
         fbo = new pxFbo(gl);
         feedback = new pxFbo(gl);
 
-        drySignal = new pxBB(gl);
         renderTex = new pxBB(gl);
 
         blur = new pxFbo(gl);
         goop = new pxFbo(gl);
-        normal = new pxFbo(gl);
-        contrast = new pxFbo(gl);
-        emboss = new pxFbo(gl);
         render = new pxFbo(gl);
 
         //set up fbo's
@@ -101,7 +123,7 @@
     }
 
     function loop() {
-        w.requestAnimationFrame(loop);
+        animationFrameId = w.requestAnimationFrame(loop);
 
         goop.start();
         gl.useProgram(goopProgram);
@@ -126,6 +148,7 @@
 
 
     function getImgAsTexture() {
+        console.log("getImgAsTexture");
         imgTex = createAndSetupTexture(gl);
         imgTex.image = img;
         gl.bindTexture(gl.TEXTURE_2D, imgTex);
@@ -133,6 +156,7 @@
     }
 
     function getNewImg() {
+        console.log("getNewImg");
         feedback.start();
         baseTexture.draw(baseProgram, imgTex);
     }

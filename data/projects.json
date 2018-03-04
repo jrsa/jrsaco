@@ -11,9 +11,9 @@
         },
         {
             "type": "interactive",
-            "title": "auto2",
+            "title": "auto1",
             "year": 2017,
-            "link": "http://jrsa.co/auto2/"
+            "link": "http://jrsa.co/auto1/"
         },
         {
             "type": "interactive",
@@ -25,7 +25,7 @@
             ]
         },
         {
-            "type": "video",
+            "type": "music video",
             "title": "lessForm",
             "year": 2017,
             "collaborators": [
@@ -85,10 +85,10 @@
             "title": "critical density",
             "year": 2015,
             "collaborators": [
-                "Elli Altman",
-                "Sam Martinez",
-                "Evan Pierre", 
-                "Harry van Dort"
+                "elli altman",
+                "sam martinez",
+                "evan pierre", 
+                "harry van dort"
             ],
             "statement": " this was a collaboration where each one of us performed a repetitive action as part of a cycle, which gradually accelerated in speed. evan and i worked to create an audiovisual representation of this cycle which was projected onto the performance space. i composed a small piece of music for each person's action, each of which was illuminated by overhead lights during the cyclical increments.",
             "vimeo": 128233085
