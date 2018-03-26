@@ -52,7 +52,12 @@ helpers do
     end
 
     def project_link p
-        "/projects/#{project_slug(p)}/"
+      if p.link
+        return p.link
+      end
+      if p.vimeo
+        return "https://vimeo.com/#{p.vimeo}"
+      end
     end
 
     def collaborators p
