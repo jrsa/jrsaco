@@ -163,7 +163,7 @@
             // spatial differencing using intermediate pixel value (`prelook`)
             color += 0.005;
             color *= .99 + (e * .015); 
-            color -= (prelook * 0.01);   
+            color -= (prelook * 0.04 * ramp.y);
 
             gl_FragColor = color;
         }
