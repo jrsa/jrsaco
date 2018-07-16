@@ -1,6 +1,16 @@
 {
     "projects": [
         {
+            "type": "interactive",
+            "title": "3DSANDBOX",
+            "year": 2017,
+            "link": "https://www.wholesomecircuits.com/sculptures/3dsandbox/",
+            "collaborators": [
+                "shaurjya banerjee",
+                "clay burton"
+            ]
+        },
+        {
             "type": "video",
             "title": "revision forever",
             "year": 2017,
@@ -20,7 +30,7 @@
             "type": "interactive",
             "title": "goop",
             "year": 2017,
-            "link": "http://clickbecause.net/goop/",
+            "link": "http://clickbecause.net/works/goop/",
             "collaborators": [
                 "mike leisz"
             ]
@@ -56,10 +66,10 @@
                 "jason tibi",
                 "ashwin vaswani"
             ],
-            "statement": "i participated in, and helped coordinate an experimental electronics club, the goal of which was to make musical instruments. after several months we did a performance, which included a new circuit design in front of the audience."
+            "statement": "i participated in an experimental electronics club, the goal of which was to make musical instruments. after several months we did a performance, which included a new circuit design in front of the audience."
         }, 
         {
-            "type": "installation",
+            "type": "vr experience",
             "title": "extraPerceptualCell",
             "year": 2016,
             "statement": "massage table was installed in a space, with a VR headset attached to the face rest area of the table, allowing participants to lie down and look down into a field of undulating video feedback."
