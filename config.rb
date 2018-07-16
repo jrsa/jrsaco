@@ -38,6 +38,7 @@ end
 # new portfolio
 page "/portfolio.html", layout: "portfolio"
 page "/index.html", layout: "portfolio"
+page "/project.html", layout: "portfolio"
 
 ###
 # Helpers
@@ -51,13 +52,18 @@ helpers do
         p.title.downcase.gsub(/\s+/, "")
     end
 
+    def project_page_link p
+        "/projects/#{ project_slug(p) }"
+    end
+
     def project_link p
       if p.link
         return p.link
       end
       if p.vimeo
-        return "https://vimeo.com/#{p.vimeo}"
+        # return "https://vimeo.com/#{p.vimeo}"
       end
+      project_page_link(p)
     end
 
     def collaborators p
