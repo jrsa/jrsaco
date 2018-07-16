@@ -1,13 +1,15 @@
 -# canvas is fixed
 -# empty 'item' is there as a spacer
 %canvas#sketch
-.item
+
+-2.times do
+    .item
 
 -data.projects.projects.each do |project|
     %a{href: project_link(project), target: "_blank"}
         .item{style: "background-image: url(#{project_thumb(project)});"}
             .description
-                %h1 
+                %h1
                     ="#{project.title}, #{project.year}"
                 %h2
                     ="#{project.type}"
@@ -16,9 +18,7 @@
                     %p
                         =collaborators(project)
 
-.item.description
-    %p
-        =link_to 'view source', 'https://github.com/jrsa/jrsaco'
+.item
 
 
 
