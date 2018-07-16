@@ -103,7 +103,9 @@
             float brushSize = 0.2;
             float brush = smoothstep(brushSize, brushSize + 0.05, distance(v_texCoord, mouse_vert));
 
-            vec2 ramp = (1.0 - v_texCoord) + vec2(0.0, u_scroll);
+            vec2 ramp = vec2(0.0, 1.0 - v_texCoord) + vec2(0.0, u_scroll);
+            ramp /= 2.0;
+            ramp -= 0.1;
 
             // constant zoom/rotate
             float scale_factor = 0.99;
@@ -148,7 +150,7 @@
             d -= length(s) / 2.0;
 
             // final texture sample
-            vec4 bc_out = texture2D(u_image, tc + (d * 0.001)) * ((d * 0.001) + 1.0);
+            vec4 bc_out = texture2D(u_image, tc + (d * ramp.y * 0.01)) * ((d * ramp.y * 0.01) + 1.0);
 
             // shift hue and saturation
             vec3 shift = s;
@@ -161,7 +163,7 @@
             color += mix(bc_out, vec4(hsv2rgb(shift), 1.0), mixAmt);
 
             // spatial differencing using intermediate pixel value (`prelook`)
-            color += 0.005;
+            color += vec4(0.005, 0.005, 0.005, 0.005);
             color *= .99 + (e * .015); 
             color -= (prelook * 0.04 * ramp.y);
 
