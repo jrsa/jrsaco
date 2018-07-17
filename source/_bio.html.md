@@ -1,6 +1,6 @@
 # about me:
 
-My name is James Anderson. I am an artist and technologist currently located in Los Angeles. My primary focus areas are graphics and embedded development.
+Thank you for scrolling all the way down. My name is James Anderson. I am a programmer and artist currently located in Los Angeles. My primary focus areas are graphics and embedded development.
 
 ## see also:
 
