@@ -57,7 +57,7 @@
     backCanvas.width = canvas.width;
     backCanvas.height = canvas.height;
     var backCtx = backCanvas.getContext('2d');
-/*
+
     // Create gradient
     var grd = backCtx.createLinearGradient(canvas.width / 2, canvas.height / 2, 5, canvas.width, canvas.height, canvas.width);
     grd.addColorStop(0., "red");
@@ -68,7 +68,7 @@
     // Fill with gradient
     backCtx.fillStyle = grd;
     backCtx.fillRect(0, 0, canvas.width, canvas.height);
-*/
+
     var dataURL = backCanvas.toDataURL();
 
     var img = new Image();
