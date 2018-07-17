@@ -1,0 +1,1 @@
+CMOS Club was an experimental electronics club and performance group, centered around music designs based on 4000 series CMOS logic chips. The fall 2016 show featured the club's six members performing with prebuilt circuits and also building a circuit from scratch during the performance.
