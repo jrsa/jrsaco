@@ -18,6 +18,8 @@ $grid--tablet-up: (
 @import "bourbon";
 @import "base/base"; // bitters
 
+$base-line-height: 1.2;
+$action-color: $dark-gray;
 
 
 // goog fonts
@@ -27,7 +29,7 @@ a,abbr,acronym,address,applet,article,aside,audio,b,big,blockquote,body,button,c
     // margin: 0;
     // padding: 0;
     // border: 0;
-    font: inherit;
+    // font: inherit;
     // vertical-align: baseline;
 }
 
@@ -79,6 +81,22 @@ a {
     background-size: /*contain*/ cover;
     background-position: 25% 25%;
     background-repeat: no-repeat;
+    margin-bottom: 30px;
+
+    border: solid black 5px;
+
+    &:active {
+        filter: saturate(10);
+        border: solid white 5px;
+    }
+}
+
+.item-noborder {
+    height: 100vh;
+    background-size: /*contain*/ cover;
+    background-position: 25% 25%;
+    background-repeat: no-repeat;
+    margin-bottom: 30px;
 }
 
 video {
@@ -109,6 +127,21 @@ video {
             background: #333;
 
             background-position: 35% 15%;
+        }
+
+        &:visited {
+            color: #fff;
+        }
+    }
+
+    .info {
+        display: none;
+    }
+
+    &:hover {
+        .info {
+            display: block;
+            transition: all 0.45s cubic;
         }
     }
 }

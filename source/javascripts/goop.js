@@ -27,9 +27,12 @@
     d.addEventListener('scroll', function(e) {
         var scroll = w.scrollY;
         var cHeight = canvas.height;
+        var _docHeight = (document.height !== undefined) ? document.height : document.body.offsetHeight;
 
         gl.useProgram(goopProgram);
-        gl.uniform1f(gl.getUniformLocation(goopProgram, "u_scroll"), scroll / cHeight);
+        gl.uniform1f(gl.getUniformLocation(goopProgram, "u_scroll"), scroll / _docHeight);
+
+        console.log("scroll uniform", scroll / cHeight);
 /*
         if (scroll > cHeight) {
             console.log("stopping webGL animation")
