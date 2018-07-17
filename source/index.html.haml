@@ -1,26 +1,31 @@
--# canvas is fixed
--# empty 'item' is there as a spacer
-%canvas#sketch
 
--2.times do
-    .item
+=partial(:goopsketch)
+
+.item-noborder
 
 -data.projects.projects.each do |project|
     %a{href: project_link(project), target: "_blank"}
         .item{style: "background-image: url(#{project_thumb(project)});"}
             .description
-                %h1
+                %h2 
                     ="#{project.title}, #{project.year}"
-                %h2
+                %h3
                     ="#{project.type}"
 
                 - if not project.collaborators.nil?
                     %p
                         =collaborators(project)
 
-.item
+                - if not project.statement.nil?
+                    .info
+                        %p
+                            =project.statement
 
-
-
--# this includes the javascript code and shaders
-=partial :goopsketch
+.item-noborder
+    .description
+        %h1 this website
+        %h2 2016-present
+        .info
+            %p 
+                this portfolio site was built using webGL, glsl shaders, the middleman 
+                static site generator, and AWS S3
