@@ -105,9 +105,9 @@ helpers do
 
   def projectlink_for(p)
     if p.link
-      link_to('open in new tab', p.link, target: '_blank')
+      link_to('open in new tab &#8594;', p.link, target: '_blank')
     elsif p.vimeo
-      link_to('open in vimeo', "https://vimeo.com/#{p.vimeo}", target: '_blank')
+      link_to('open in vimeo &#8594;', "https://vimeo.com/#{p.vimeo}", target: '_blank')
     end
   end
 
