@@ -4,7 +4,7 @@
 .item-noborder
 
 -data.projects.projects.each do |project|
-    %a{href: project_link(project), target: "_blank"}
+    %a{class: "itemlink", target: "_blank"}
         .item{style: "background-image: url(#{project_thumb(project)});"}
             .description
                 %h2 
@@ -16,10 +16,9 @@
                     %p
                         =collaborators(project)
 
-                - if not project.statement.nil?
-                    .info
-                        %p
-                            =project.statement
+            .info
+                =projectinfo_for(project)
+                %a{href: project_link(project), target: "_blank"} view
 
 .item-noborder
     .description
@@ -29,3 +28,5 @@
             %p 
                 this portfolio site was built using webGL, glsl shaders, the middleman 
                 static site generator, and AWS S3
+
+=javascript_include_tag :index, :async => true

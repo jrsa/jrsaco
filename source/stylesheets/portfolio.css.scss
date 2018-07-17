@@ -78,6 +78,10 @@ a {
 }
 
 .item {
+    cursor: pointer;
+}
+
+.item {
     height: 100vh;
     background-size: /*contain*/ cover;
     background-position: 25% 25%;
@@ -89,6 +93,17 @@ a {
     &:active {
         filter: saturate(10);
         border: solid white 5px;
+    }
+
+    .info {
+        padding: 10px 10px 10px 10px;
+        background-color: rgba(0.0, 0.0, 0.0, 0.5);
+        width: 35vh;
+        line-height: 1.4;
+
+        // TODO: this means people with javascript off can't read description
+        //       or follow the project links out! no muy bueno
+        display: none;
     }
 }
 
@@ -132,17 +147,6 @@ video {
 
         &:visited {
             color: #fff;
-        }
-    }
-
-    .info {
-        display: none;
-    }
-
-    &:hover {
-        .info {
-            display: block;
-            transition: all 0.45s cubic;
         }
     }
 }

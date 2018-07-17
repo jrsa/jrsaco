@@ -39,6 +39,7 @@ end
 page "/portfolio.html", layout: "portfolio"
 page "/index.html", layout: "portfolio"
 page "/project.html", layout: "portfolio"
+page "/projectinfo/*", layout: false
 
 ###
 # Helpers
@@ -61,9 +62,9 @@ helpers do
         return p.link
       end
       if p.vimeo
-        # return "https://vimeo.com/#{p.vimeo}"
+        return "https://vimeo.com/#{p.vimeo}"
       end
-      project_page_link(p)
+      # project_page_link(p)
     end
 
     def collaborators p
@@ -96,6 +97,22 @@ helpers do
   def nav_item(txt, href)
     link_to(txt, href, class: current_page.url == href ? "current" : "")
   end
+
+  # i need to not put things in here lol
+  def projectinfo_for(p)
+    res = sitemap.find_resource_by_page_id("projectinfo/#{project_slug(p)}")
+    if res
+      return res.render
+    end
+  end
+
+  def has_projectinfo?(p)
+    res = sitemap.find_resource_by_page_id("projectinfo/#{project_slug(p)}")
+    if res
+      return true
+    end
+  end
+
 end
 
 # Build-specific configuration
