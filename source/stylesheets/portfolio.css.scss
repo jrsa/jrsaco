@@ -15,12 +15,13 @@ $grid--tablet-up: (
   media: "(min-width: 900px)",
 );
 
+$my-dark-gray: #333;
+$my-light-gray: #ddd;
+
 @import "bourbon";
 @import "base/base"; // bitters
 
 $base-line-height: 1.2;
-$action-color: $dark-gray;
-
 
 // goog fonts
 @import url('https://fonts.googleapis.com/css?family=Heebo');
@@ -35,8 +36,8 @@ a,abbr,acronym,address,applet,article,aside,audio,b,big,blockquote,body,button,c
 
 body {
     padding: 50px 0px 0px 0px;
-    background-color: #333;
-    color: #ddd;
+    background-color: $my-dark-gray;
+    color: $my-light-gray;
     overflow-x: hidden;
     font: normal 1.2rem/1.2rem Heebo, sans-serif;
     -webkit-text-size-adjust: none;
@@ -55,11 +56,11 @@ h2 {
 }
 
 a {
-    color: #ddd;
+    color: $my-light-gray;
     text-decoration: none;
 
-    &:hover {
-        color: #aaa;
+    &:hover, &:focus, &:active {
+        color: $my-light-gray;
         transition: all 0.45s cubic;
     }
 }
@@ -124,7 +125,7 @@ video {
             color: #fff;
             font-weight: bold;
             transition: all 0.45s cubic;
-            background: #333;
+            background: $my-dark-gray;
 
             background-position: 35% 15%;
         }
