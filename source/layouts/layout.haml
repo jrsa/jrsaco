@@ -1,17 +1,19 @@
 %html
   %head
-    %title 
-      ="#{current_page.data.title} - jrsa.co"
+    %title jrsa.co // james anderson
 
-    =stylesheet_link_tag :site, :async => true
-    <meta name=viewport content="width=device-width, initial-scale=1">
+    =stylesheet_link_tag :portfolio, :async => true
+    %meta{name: "viewport", content: "width=device-width, initial-scale=1"}
   %body{id: ["page", current_page.data.title]}
-    %header
-      =partial :nav
     .container
-      .content
-        =yield
-    -#%footer 
-    -#  %p 
-    -#    ="copyright #{Date.today.year} james anderson, all rights reserved"
-    =javascript_include_tag :all, :async => true
+      %noscript.description this site requires javascript
+
+      =yield
+
+      .information.description
+        %h1 james r. s. anderson
+        %h2 programmer & artist    
+        %p
+          =link_to 'email: jrsa at jrsa dot co', 'mailto:jrsa@jrsa.co'
+        %p
+          =link_to '@jrsa on github', 'https://github.com/jrsa'

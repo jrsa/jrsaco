@@ -1,23 +1,17 @@
-.container
-    .content
-        %h1
-            ="#{project.title} "
-        %h2
-            ="#{project.year}"
-        %h2
-            ="#{collaborators(project)}"
-        %p
-            =project.statement
+%h1
+    ="#{project.title} "
+%h2
+    ="#{project.year}"
+%h2
+    ="#{collaborators(project)}"
+%p
+    =projectinfo_for(project)
+    =projectlink_for(project)
 
-        - if not project.link.nil?
-            %a{:href => project.link}
-                view
+- if not project.vimeo.nil?
+    =partial :vimeo_embed, :locals => {id: project.vimeo}
 
-        - if not project.vimeo.nil?
-            =partial :vimeo_embed, :locals => {id: project.vimeo}
-
-
-        -s3_imgs(project_slug(project)).each_with_index do |img, idx|
-            .item
-                %a{href: img.public_url, target: "_blank"}
-                    =image_tag img.public_url, class: 'gallery', style: 'width: 100%;'
+-s3_imgs(project_slug(project)).each_with_index do |img, idx|
+    .item
+        %a{href: img.public_url, target: "_blank"}
+            =image_tag img.public_url, class: 'gallery', style: 'width: 100%;'
