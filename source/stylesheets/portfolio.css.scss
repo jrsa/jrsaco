@@ -56,11 +56,14 @@ h2 {
 }
 
 a {
-    color: $my-light-gray;
+    color: white;
     text-decoration: none;
+    font-weight: bold;
 
     &:hover, &:focus, &:active {
-        color: $my-light-gray;
+        color: white;
+        // text-decoration: underline;
+        border: solid white 2px;
         transition: all 0.45s cubic;
     }
 }
@@ -97,7 +100,7 @@ a {
 
     .info {
         padding: 10px 10px 10px 10px;
-        background-color: rgba(0.0, 0.0, 0.0, 0.5);
+        background-color: rgba(0.0, 0.0, 0.0, 1.0);
         width: 35vh;
         line-height: 1.4;
 
@@ -130,7 +133,7 @@ video {
     background-color: #000;
     width: 35vh;
     line-height: 1.4;
-
+/*
     a {
         margin: 10px 10px 10px 0px;
 
@@ -149,6 +152,7 @@ video {
             color: #fff;
         }
     }
+    */
 }
 
 .information {

@@ -4,29 +4,30 @@
 .item-noborder
 
 -data.projects.projects.each do |project|
-    %a{class: "itemlink", target: "_blank"}
-        .item{style: "background-image: url(#{project_thumb(project)});"}
-            .description
-                %h2 
-                    ="#{project.title}, #{project.year}"
-                %h3
-                    ="#{project.type}"
+    .item{style: "background-image: url(#{project_thumb(project)});"}
+        .description
+            %h2
+                ="#{project.title}, #{project.year}"
+            %h3
+                ="#{project.type}"
 
-                - if not project.collaborators.nil?
-                    %p
-                        =collaborators(project)
+            - if not project.collaborators.nil?
+                %p
+                    =collaborators(project)
 
-            .info
-                =projectinfo_for(project)
-                %a{href: project_link(project), target: "_blank"} view
+        .info
+            =projectinfo_for(project)
+            =projectlink_for(project)
 
 .item-noborder
-    .description
+    .description{style: 'width: 50vw'}
         %h1 this website
         %h2 2016-present
         .info
             %p 
                 this portfolio site was built using webGL, glsl shaders, the middleman 
                 static site generator, and AWS S3
+
+            =partial(:bio)
 
 =javascript_include_tag :index, :async => true

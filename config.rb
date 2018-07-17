@@ -57,16 +57,6 @@ helpers do
         "/projects/#{ project_slug(p) }"
     end
 
-    def project_link p
-      if p.link
-        return p.link
-      end
-      if p.vimeo
-        return "https://vimeo.com/#{p.vimeo}"
-      end
-      # project_page_link(p)
-    end
-
     def collaborators p
         p.collaborators.nil? ? "" : "with #{p.collaborators.join(", ")}"
     end
@@ -111,6 +101,18 @@ helpers do
     if res
       return true
     end
+  end
+
+  def projectlink_for(p)
+    if p.link
+      link_to('open in new tab', p.link, target: '_blank')
+    elsif p.vimeo
+      link_to('open in vimeo', "https://vimeo.com/#{p.vimeo}", target: '_blank')
+    end
+  end
+
+  def link(href, *args)
+    link_to(href, "http://#{href}", *args)
   end
 
 end
