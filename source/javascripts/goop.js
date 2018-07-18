@@ -60,11 +60,8 @@
 
     // Create gradient
     var grd = backCtx.createLinearGradient(canvas.width / 2, canvas.height / 2, 5, canvas.width, canvas.height, canvas.width);
-    grd.addColorStop(0., "red");
-    // grd.addColorStop(.1, "yellow");
-    // grd.addColorStop(.2, "green");
-    grd.addColorStop(.5, "blue");
-    grd.addColorStop(1., "purple");
+    grd.addColorStop(0., "gray");
+
     // Fill with gradient
     backCtx.fillStyle = grd;
     backCtx.fillRect(0, 0, canvas.width, canvas.height);
