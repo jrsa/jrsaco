@@ -20,14 +20,13 @@
             =projectlink_for(project)
 
 .item-noborder
-    .description{style: 'width: 50vw'}
+    .description.text
         %h1 this website
         %h2 2016-present
-        .info
-            %p 
-                this portfolio site was built using webGL, glsl shaders, the middleman 
-                static site generator, and AWS S3
+        %p
+            this portfolio site was built using webGL, glsl shaders, the middleman
+            static site generator, and AWS S3
 
-            =partial(:bio)
+        =partial(:bio)
 
 =javascript_include_tag :index, :async => true

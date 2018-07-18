@@ -76,20 +76,23 @@ a {
     padding: 0px 0px 0px 0px;
 }
 
-.content {
-    width: 80vw;
-}
-
-.item {
-    cursor: pointer;
-}
-
-.item {
-    height: 100vh;
+@mixin row {
     background-size: /*contain*/ cover;
     background-position: 25% 25%;
     background-repeat: no-repeat;
     margin-bottom: 30px;
+
+    @include grid-media($grid--tablet-up) {
+        height: 100vh;
+    }
+}
+
+.item {
+    @include row;
+
+    cursor: pointer;
+
+    height: 66vh;
 
     border: solid black 5px;
 
@@ -111,11 +114,7 @@ a {
 }
 
 .item-noborder {
-    height: 100vh;
-    background-size: /*contain*/ cover;
-    background-position: 25% 25%;
-    background-repeat: no-repeat;
-    margin-bottom: 30px;
+    @include row;
 }
 
 video {
@@ -131,34 +130,23 @@ video {
 .description {
     padding: 10px 10px 10px 10px;
     background-color: #000;
-    width: 35vh;
     line-height: 1.4;
-/*
-    a {
-        margin: 10px 10px 10px 0px;
 
-        color: #fff;
-        transition: all 0.1s linear;
-        &:hover {
-            color: #fff;
-            font-weight: bold;
-            transition: all 0.45s cubic;
-            background: $my-dark-gray;
-
-            background-position: 35% 15%;
-        }
-
-        &:visited {
-            color: #fff;
-        }
+    @include grid-media($grid--tablet-up) {
+        width: 35vh;
     }
-    */
+}
+
+.text {
+    width: 100%;
 }
 
 .information {
-    position: fixed;
-    top: 10px;
-    right: 10px;
+    @include grid-media($grid--tablet-up) {
+        position: fixed;
+        top: 10px;
+        right: 10px;
+    }
 }
 
 #sketch {
