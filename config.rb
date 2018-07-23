@@ -15,6 +15,7 @@ data.projects.projects.each do |p|
 end
 
 page "/projectinfo/*", layout: false
+page "/goop.html", layout: false
 
 ###
 # Helpers
