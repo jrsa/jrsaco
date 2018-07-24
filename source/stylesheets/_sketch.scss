@@ -3,4 +3,7 @@
     top: 0px;
     left: 0px;
     z-index: -20;
+    display: block;  /* prevents scrollbar */
+    width: 100vw;
+    height: 100vh;
 }
