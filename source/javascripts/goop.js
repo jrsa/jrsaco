@@ -136,7 +136,8 @@ if (typeof Object.create !== 'function') {
             },
             scroll: function (e) {
                 var scroll = e.pageY;
-                var _docHeight = (document.height !== undefined) ? document.height : document.body.offsetHeight;
+                var _docHeight = (document.height !== undefined) ?
+                    document.height : document.body.offsetHeight;
 
                 scene.updateParameters({scroll: scroll / _docHeight});
             },
