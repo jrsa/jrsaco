@@ -54,7 +54,7 @@ if (typeof Object.create !== 'function') {
                 }
             }
 
-            sourceFilenames = {
+            names = {
                 passthrough: {
                     vs: "baseVs",
                     fs: "baseFs",
@@ -69,9 +69,9 @@ if (typeof Object.create !== 'function') {
                 },
             };
 
-            for (k in sourceFilenames) {
+            for (k in names) {
                 var p = Object.create(jarsGl.program);
-                p.id = createProgramFromScripts(this.gl, [sourceFilenames[k].vs, sourceFilenames[k].fs]);
+                p.id = createProgramFromScripts(this.gl, [names[k].vs, names[k].fs]);
                 p.setters = createUniformSetters(this.gl, p.id);
                 this.programs[k] = p;
             }
