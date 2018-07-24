@@ -1,167 +1,164 @@
-(function(w, d) {
-    var gl, baseTexture, canvas, fbo, feedback;
-    var blur, goop, render;
+// note: `sketch.domhandlers` and `sketch.draw()` are manually bound back to
+// `sketch` before being installed as callbacks. i'm not certain about
+// support for this in old(er) browsers but it works for me (lol)
 
-    var baseProgram, blurProgram, goopProgram;
-    var baseVs, baseFs, feedbackFs, blurFs, goopFs;
+// thanks douglas hofstadter (i mean crockford)
+if (typeof Object.create !== 'function') {
+    Object.create = function (o) {
+        var F = function () {};
+        F.prototype = o;
+        return new F();
+    }
+}
 
-    var imgTex, renderTex;
-
-    var animationFrameId;
-
-    var mvx = .08;
-    var mvy = .06;
-    canvas = d.getElementById("sketch");
-
-    // i think if this ran in after the dom is ready it would already be the right size
-    // it initializes all the GL stuff to some small size and then just draws the canvas
-    // bigger after it figures out what size it will be, stretching the framebuffer contents
-    canvas.width = w.innerWidth;
-    canvas.height = w.innerHeight;
-
-    d.addEventListener('mousemove', function(e) {
-        mvx = map(e.clientX, 0, w.innerWidth, 0.0, 1.0);
-        mvy = map(e.clientY, 0, w.innerHeight, 1.0, 0.0);
-    }, false);
-
-    d.addEventListener('scroll', function(e) {
-        var scroll = w.scrollY;
-        var cHeight = canvas.height;
-        var _docHeight = (document.height !== undefined) ? document.height : document.body.offsetHeight;
-
-        gl.useProgram(goopProgram);
-        gl.uniform1f(gl.getUniformLocation(goopProgram, "u_scroll"), scroll / _docHeight);
-
-        console.log("scroll uniform", scroll / cHeight);
-/*
-        if (scroll > cHeight) {
-            console.log("stopping webGL animation")
-
-            w.cancelAnimationFrame(animationFrameId);
-            animationFrameId = 0;
-        } else {
-            if (animationFrameId === 0) {
-                console.log("resuming webGL animation")
-                loop();
-            }
-        }
-*/
-    })
-
-    w.addEventListener('resize', function(e) {
-        gl.viewport(0, 0, canvas.width, canvas.height)
-    }, true);
-
-    // create backing canvas
-    var backCanvas = d.createElement('canvas');
-    backCanvas.width = canvas.width;
-    backCanvas.height = canvas.height;
-    var backCtx = backCanvas.getContext('2d');
-
-    // Create gradient
-    var grd = backCtx.createLinearGradient(canvas.width / 2, canvas.height / 2, 5, canvas.width, canvas.height, canvas.width);
-    grd.addColorStop(0., "gray");
-
-    // Fill with gradient
-    backCtx.fillStyle = grd;
-    backCtx.fillRect(0, 0, canvas.width, canvas.height);
-
-    var dataURL = backCanvas.toDataURL();
-
-    var img = new Image();
-    // img.src = "data:image/gif;base64,R0lGODlhAQABAIAAAMLCwgAAACH5BAAAAAAALAAAAAABAAEAAAICRAEAOw==";
-    img.src = dataURL;
-    img.onload = function() {
-        console.log("img.onload");
-
-        getImgAsTexture();
-        getNewImg();
-        loop();
+(function () {
+    // independent stuff in here
+    var util = {
+        map: function (value, low1, high1, low2, high2) {
+            return low2 + (high2 - low2) * (value - low1) / (high1 - low1);
+        },
     };
 
-    initGl();
-    initFbosAndShaders();
+    // object-oriented interface on some of the stuff in webgl-utils these are
+    // NOT constructors, they are objects meant to be cloned by Object.create
+    var jarsGl = {
+        program: {
+            use: function (gl) {
+                console.log("using a program");
+                // gl.useProgram(this.id);
+            },
+            unf: function (gl, u) {
+                setUniforms(this.setters, u);
+            }
+        },
+    };
 
-    function initGl() {
-        console.log("init")
-        gl = getWebGLContext(canvas);
+    // gl stuff in here
+    var scene = {
+        init: function (cnvs) {
+            var that = this, sourceFilenames, i;
+            this.gl = getWebGLContext(cnvs);
 
-        gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
-        gl.enable(gl.BLEND);
-    }
+            this.blur_fbo = new pxFbo(this.gl);
+            this.goop_fbo = new pxFbo(this.gl);
 
-    function initFbosAndShaders() {
-        console.log("initFbosAndShaders");
+            this.programs = {};
 
+            sourceFilenames = {
+                passthrough: {
+                    vs: "baseVs",
+                    fs: "baseFs",
+                },
+                blur: {
+                    vs: "baseVs",
+                    fs: "blurFs",
+                },
+                goop: {
+                    vs: "baseVs",
+                    fs: "goopFs",
+                },
+            };
 
-        baseTexture = new pxBB(gl);
-        fbo = new pxFbo(gl);
-        feedback = new pxFbo(gl);
+            for (k in sourceFilenames) {
+                var p = Object.create(jarsGl.program);
+                p.id = createProgramFromScripts(this.gl, [sourceFilenames[k].vs, sourceFilenames[k].fs]);
+                p.setters = createUniformSetters(this.gl, p.id);
+                this.programs[k] = p;
+            }
+        },
+        render: function () {
+            var that = this;
+            var blit = function (src, dest, prog) {
+                if (typeof(dest) === 'undefined') {
+                    dest = null;
+                }
+                if (typeof(prog) === 'undefined') {
+                    prog = that.programs.passthrough.id;
+                }
+                if (dest) {
+                    dest.bind();
+                } else {
+                    that.gl.bindFramebuffer(that.gl.FRAMEBUFFER, null);
+                }
+                src.draw(prog);
+            };
+            blit(this.blur_fbo, this.goop_fbo, this.programs.goop.id);
+            blit(this.goop_fbo, this.blur_fbo, this.programs.blur.id);
+            blit(this.blur_fbo);
+        },
+        resize: function () {
+            var w = this.gl.drawingBufferWidth;
+            var h = this.gl.drawingBufferHeight;
 
-        renderTex = new pxBB(gl);
+            this.blur_fbo.allocate(w, h);
+            this.goop_fbo.allocate(w, h);
 
-        blur = new pxFbo(gl);
-        goop = new pxFbo(gl);
-        render = new pxFbo(gl);
+            this.gl.viewport(0, 0, w, h)
+            this.gl.useProgram(this.programs.blur.id);
+            this.gl.uniform2f(this.gl.getUniformLocation(this.programs.blur.id, "resolution"), w, h);
+        },
+        updateParameters: function (p) {
+        },
+    };
 
-        //set up fbo's
-        fbo.allocate(canvas.width, canvas.height);
-        feedback.allocate(canvas.width, canvas.height);
+    // dom stuff in here
+    var sketch = {
+        domhandlers: {
+            resize: function (e) {
+                var width = this.$canvas.clientWidth;
+                var height = this.$canvas.clientHeight;
+                scene.resize(width, height);
+                if (this.$canvas.width != width ||
+                    this.$canvas.height != height) {
+                   this.$canvas.width = width;
+                   this.$canvas.height = height;
+                }
+            },
+            scroll: function (e) {
+                var scroll = e.pageY;
+                var cHeight = this.$canvas.height;
+                var _docHeight = (document.height !== undefined) ? document.height : document.body.offsetHeight;
 
-        blur.allocate(canvas.width, canvas.height);
-        goop.allocate(canvas.width, canvas.height);
-        render.allocate(canvas.width, canvas.height);
+                // this.gl.useProgram(this.goop_program);
+                // this.gl.uniform1f(this.gl.getUniformLocation(this.goop_program, "u_scroll"), scroll / _docHeight);
+            },
+            mousemove: function (e) {
+                var x = util.map(e.clientX, 0, this.w.innerWidth, 0.0, 1.0);
+                var y = util.map(e.clientY, 0, this.w.innerHeight, 1.0, 0.0);
 
-        baseVs = createShaderFromScriptElement(gl, "baseVs");
-        baseFs = createShaderFromScriptElement(gl, "baseFs");
-        blurFs = createShaderFromScriptElement(gl, "blurFs");
-        goopFs = createShaderFromScriptElement(gl, "goopFs");
+                // this.gl.useProgram(this.goop_program);
+                // this.gl.uniform2f(this.gl.getUniformLocation(this.goop_program, "mouse_vert"), x, y);
+            },
+        },
+        init: function (w, d) {
+            var that = this;
 
-        baseProgram = createProgram(gl, [baseVs, baseFs]);
-        blurProgram = createProgram(gl, [baseVs, blurFs]);
-        goopProgram = createProgram(gl, [baseVs, goopFs]);
-    }
+            this.w = w;
 
-    function loop() {
-        animationFrameId = w.requestAnimationFrame(loop);
+            this.$canvas = d.getElementById("sketch");
+            this.$canvas.width = w.innerWidth;
+            this.$canvas.height = w.innerHeight;
 
-        goop.start();
-        gl.useProgram(goopProgram);
-        gl.uniform2f(gl.getUniformLocation(goopProgram, "mouse_vert"), mvx, mvy);
-        feedback.draw(goopProgram);
+            // bind dom handlers to this object
+            for(k in this.domhandlers) {
+                var h = that.domhandlers[k];
+                that.domhandlers[k] = h.bind(that);
+            }
 
-        blur.start();
-        gl.useProgram(blurProgram);
-        gl.uniform2f(gl.getUniformLocation(blurProgram, "resolution"), canvas.width, canvas.height);
-        goop.draw(blurProgram);
+            d.addEventListener('mousemove', this.domhandlers.mousemove, false);
+            d.addEventListener('scroll', this.domhandlers.scroll);
+            w.addEventListener('resize', this.domhandlers.resize, true);
 
-        render.start();
-        gl.useProgram(baseProgram);
-        blur.draw(baseProgram);
+            scene.init(this.$canvas);
 
-        feedback.start();
-        render.draw(baseProgram);
+            this.domhandlers.resize();
+            this.animate();
+        },
+        animate: function () {
+            this.frame = this.w.requestAnimationFrame(this.animate.bind(this));
+            scene.render();
+        },
+    };
 
-        gl.bindFramebuffer(gl.FRAMEBUFFER, null);
-        feedback.draw(baseProgram);
-    }
-
-
-    function getImgAsTexture() {
-        console.log("getImgAsTexture");
-        imgTex = createAndSetupTexture(gl);
-        imgTex.image = img;
-        gl.bindTexture(gl.TEXTURE_2D, imgTex);
-        gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, imgTex.image);
-    }
-
-    function getNewImg() {
-        console.log("getNewImg");
-        feedback.start();
-        baseTexture.draw(baseProgram, imgTex);
-    }
-
-    function map(value, low1, high1, low2, high2) {
-        return low2 + (high2 - low2) * (value - low1) / (high1 - low1);
-    }
-})(window, document)
+    sketch.init(this, this.document);
+})()

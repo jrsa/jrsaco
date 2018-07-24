@@ -13,7 +13,7 @@
 
 
   window.pxFbo = function(gl) {
-    this.start = function(pgm) {
+    this.bind = function() {
       gl.bindFramebuffer(gl.FRAMEBUFFER, this.fbo);
     };
 
