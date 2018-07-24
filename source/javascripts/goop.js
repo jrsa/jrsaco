@@ -24,8 +24,7 @@ if (typeof Object.create !== 'function') {
     var jarsGl = {
         program: {
             use: function (gl) {
-                console.log("using a program");
-                // gl.useProgram(this.id);
+                gl.useProgram(this.id);
             },
             unf: function (gl, u) {
                 setUniforms(this.setters, u);
@@ -43,6 +42,17 @@ if (typeof Object.create !== 'function') {
             this.goop_fbo = new pxFbo(this.gl);
 
             this.programs = {};
+
+            this.param_mapping = {
+                scroll: {
+                    prog: "goop",
+                    u: "u_scroll",
+                },
+                mouse: {
+                    prog: "goop",
+                    u: "mouse_vert",
+                }
+            }
 
             sourceFilenames = {
                 passthrough: {
@@ -97,7 +107,16 @@ if (typeof Object.create !== 'function') {
             this.gl.useProgram(this.programs.blur.id);
             this.gl.uniform2f(this.gl.getUniformLocation(this.programs.blur.id, "resolution"), w, h);
         },
-        updateParameters: function (p) {
+        updateParameters: function (params) {
+            var prog, u_name;
+            for (prm in params) {
+                if (prm in this.param_mapping) {
+                    prog = this.programs[this.param_mapping[prm].prog];
+                    u_name = this.param_mapping[prm].u;
+                    prog.use(this.gl);
+                    prog.setters[u_name](params[prm]);
+                }
+            }
         },
     };
 
@@ -116,18 +135,15 @@ if (typeof Object.create !== 'function') {
             },
             scroll: function (e) {
                 var scroll = e.pageY;
-                var cHeight = this.$canvas.height;
                 var _docHeight = (document.height !== undefined) ? document.height : document.body.offsetHeight;
 
-                // this.gl.useProgram(this.goop_program);
-                // this.gl.uniform1f(this.gl.getUniformLocation(this.goop_program, "u_scroll"), scroll / _docHeight);
+                scene.updateParameters({scroll: scroll / _docHeight});
             },
             mousemove: function (e) {
                 var x = util.map(e.clientX, 0, this.w.innerWidth, 0.0, 1.0);
                 var y = util.map(e.clientY, 0, this.w.innerHeight, 1.0, 0.0);
 
-                // this.gl.useProgram(this.goop_program);
-                // this.gl.uniform2f(this.gl.getUniformLocation(this.goop_program, "mouse_vert"), x, y);
+                scene.updateParameters({mouse: [x, y]});
             },
         },
         init: function (w, d) {
