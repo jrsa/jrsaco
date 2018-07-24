@@ -104,17 +104,18 @@ if (typeof Object.create !== 'function') {
             this.goop_fbo.allocate(w, h);
 
             this.gl.viewport(0, 0, w, h)
-            this.gl.useProgram(this.programs.blur.id);
-            this.gl.uniform2f(this.gl.getUniformLocation(this.programs.blur.id, "resolution"), w, h);
+            this.programs.blur.use(this.gl);
+            this.programs.blur.unf(this.gl, {resolution: [w, h]});
         },
         updateParameters: function (params) {
-            var prog, u_name;
+            var pname, uname;
             for (prm in params) {
                 if (prm in this.param_mapping) {
-                    prog = this.programs[this.param_mapping[prm].prog];
-                    u_name = this.param_mapping[prm].u;
-                    prog.use(this.gl);
-                    prog.setters[u_name](params[prm]);
+                    pname = this.param_mapping[prm].prog;
+                    uname = this.param_mapping[prm].u;
+
+                    this.programs[pname].use(this.gl);
+                    this.programs[pname].unf(this.gl, {uname: params[prm]});
                 }
             }
         },
