@@ -63,7 +63,6 @@ if (typeof Object.create !== 'function') {
     // gl stuff in here
     var scene = {
         init: function (cnvs) {
-            var that = this, sourceFilenames, i;
             this.gl = getWebGLContext(cnvs);
 
             this.blur_fbo = new pxFbo(this.gl);
