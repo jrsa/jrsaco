@@ -19,6 +19,33 @@ if (typeof Object.create !== 'function') {
         },
     };
 
+    var config = {
+        param_mapping: {
+            scroll: {
+                prog: "goop",
+                u: "u_scroll",
+            },
+            mouse: {
+                prog: "goop",
+                u: "mouse_vert",
+            },
+        },
+        names: {
+            passthrough: {
+                vs: "baseVs",
+                fs: "baseFs",
+            },
+            blur: {
+                vs: "baseVs",
+                fs: "blurFs",
+            },
+            goop: {
+                vs: "baseVs",
+                fs: "goopFs",
+            },
+        },
+    };
+
     // object-oriented interface on some of the stuff in webgl-utils these are
     // NOT constructors, they are objects meant to be cloned by Object.create
     var jarsGl = {
@@ -27,6 +54,7 @@ if (typeof Object.create !== 'function') {
                 gl.useProgram(this.id);
             },
             unf: function (gl, u) {
+                this.use(gl);
                 setUniforms(this.setters, u);
             }
         },
@@ -43,35 +71,11 @@ if (typeof Object.create !== 'function') {
 
             this.programs = {};
 
-            this.param_mapping = {
-                scroll: {
-                    prog: "goop",
-                    u: "u_scroll",
-                },
-                mouse: {
-                    prog: "goop",
-                    u: "mouse_vert",
-                }
-            }
-
-            names = {
-                passthrough: {
-                    vs: "baseVs",
-                    fs: "baseFs",
-                },
-                blur: {
-                    vs: "baseVs",
-                    fs: "blurFs",
-                },
-                goop: {
-                    vs: "baseVs",
-                    fs: "goopFs",
-                },
-            };
-
-            for (k in names) {
+            for (k in config.names) {
                 var p = Object.create(jarsGl.program);
-                p.id = createProgramFromScripts(this.gl, [names[k].vs, names[k].fs]);
+                p.id = createProgramFromScripts(this.gl,
+                    [config.names[k].vs, config.names[k].fs]);
+
                 p.setters = createUniformSetters(this.gl, p.id);
                 this.programs[k] = p;
             }
@@ -104,17 +108,14 @@ if (typeof Object.create !== 'function') {
             this.goop_fbo.allocate(w, h);
 
             this.gl.viewport(0, 0, w, h)
-            this.programs.blur.use(this.gl);
             this.programs.blur.unf(this.gl, {resolution: [w, h]});
         },
         updateParameters: function (params) {
             var pname, uname;
             for (prm in params) {
-                if (prm in this.param_mapping) {
-                    pname = this.param_mapping[prm].prog;
-                    uname = this.param_mapping[prm].u;
-
-                    this.programs[pname].use(this.gl);
+                if (prm in config.param_mapping) {
+                    pname = config.param_mapping[prm].prog;
+                    uname = config.param_mapping[prm].u;
                     this.programs[pname].unf(this.gl, {uname: params[prm]});
                 }
             }
