@@ -110,12 +110,14 @@ if (typeof Object.create !== 'function') {
             this.programs.blur.unf(this.gl, {resolution: [w, h]});
         },
         updateParameters: function (params) {
-            var pname, uname;
+            var pname, uname, uniforms;
             for (prm in params) {
                 if (prm in config.param_mapping) {
                     pname = config.param_mapping[prm].prog;
                     uname = config.param_mapping[prm].u;
-                    this.programs[pname].unf(this.gl, {uname: params[prm]});
+                    uniforms = {};
+                    uniforms[uname] = params[prm];
+                    this.programs[pname].unf(this.gl, uniforms);
                 }
             }
         },
