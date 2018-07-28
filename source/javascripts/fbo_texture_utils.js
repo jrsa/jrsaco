@@ -1,5 +1,6 @@
 (function(w, d) {
-  window.createAndSetupTexture = function(gl) {
+  var px = {};
+  px.createAndSetupTexture = function(gl) {
     var texture = gl.createTexture();
     gl.bindTexture(gl.TEXTURE_2D, texture);
     gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
@@ -12,7 +13,7 @@
   }
 
 
-  window.pxFbo = function(gl) {
+  px.FBO = function(gl) {
     this.bind = function() {
       gl.bindFramebuffer(gl.FRAMEBUFFER, this.fbo);
     };
@@ -38,9 +39,7 @@
       this.bb.draw2(pgm, this.texture, texture2);
     }
 
-    this.fbo;
-    this.texture;
-    this.bb = new pxBB(gl);
+    this.bb = new px.BB(gl);
   }
 
 
@@ -49,7 +48,7 @@
     gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(dataset), gl.STATIC_DRAW);
   }
 
-  window.pxBB = function(gl) {
+  px.BB = function(gl) {
     this.vert = gl.createBuffer();
     initBuffer(gl, this.vert, [-1.0, 1.0,
     0.0, -1.0, -1.0, 0.0,
@@ -70,7 +69,7 @@
     1, 1, 1, 1,
     1, 1, 1, 1]);
 
-    pxBB.prototype.predraw = function(pgm) {
+    this.predraw = function(pgm) {
       //set up vertex attributes
       gl.useProgram(pgm);
       pgm.vertexPosAttrib = gl.getAttribLocation(pgm, 'pos');
@@ -90,10 +89,9 @@
 
       gl.bindBuffer(gl.ARRAY_BUFFER, this.tex);
       gl.vertexAttribPointer(pgm.vertexTexAttrib, 2, gl.FLOAT, false, 0, 0);
-
     }
 
-    pxBB.prototype.draw = function(pgm, texture) {
+    this.draw = function(pgm, texture) {
       this.predraw(pgm);
       gl.uniform1i(gl.getUniformLocation(pgm, "u_image"), 0);
       gl.activeTexture(gl.TEXTURE0);
@@ -101,7 +99,7 @@
       gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
     }
 
-    pxBB.prototype.draw2 = function(pgm, texture1, texture2) {
+    this.draw2 = function(pgm, texture1, texture2) {
       this.predraw(pgm);
       gl.uniform1i(gl.getUniformLocation(pgm, "u_image"), 0);
       gl.uniform1i(gl.getUniformLocation(pgm, "u_image2"), 1);
@@ -110,10 +108,7 @@
       gl.activeTexture(gl.TEXTURE1);
       gl.bindTexture(gl.TEXTURE_2D, texture2);
       gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
-
     }
-
   }
-
-  window.pxBB = pxBB;
+  window.px = px;
 })(window, document)

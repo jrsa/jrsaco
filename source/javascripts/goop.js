@@ -65,8 +65,8 @@ if (typeof Object.create !== 'function') {
         init: function (cnvs) {
             this.gl = getWebGLContext(cnvs);
 
-            this.blur_fbo = new pxFbo(this.gl);
-            this.goop_fbo = new pxFbo(this.gl);
+            this.blur_fbo = new px.FBO(this.gl);
+            this.goop_fbo = new px.FBO(this.gl);
 
             this.programs = {};
 
