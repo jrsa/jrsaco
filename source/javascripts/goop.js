@@ -58,6 +58,43 @@ if (typeof Object.create !== 'function') {
                 setUniforms(this.setters, u);
             }
         },
+        framebuffer: {
+            allocate: function (gl, w, h) {
+                this.fbo = gl.createFramebuffer();
+
+                // i hate this
+                this.texture = gl.createTexture();
+                gl.bindTexture(gl.TEXTURE_2D, this.texture);
+                gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S,
+                    gl.CLAMP_TO_EDGE);
+                gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T,
+                    gl.CLAMP_TO_EDGE);
+                gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER,
+                    gl.LINEAR);
+                gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER,
+                    gl.LINEAR);
+                gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, w, h, 0, gl.RGBA,
+                    gl.UNSIGNED_BYTE, null);
+
+                gl.bindFramebuffer(gl.FRAMEBUFFER, this.fbo);
+                gl.framebufferTexture2D(gl.FRAMEBUFFER, gl.COLOR_ATTACHMENT0,
+                    gl.TEXTURE_2D, this.texture, 0);
+
+                // this shouldn't be here but it will be for now
+                this.bb = new px.BB(gl);
+            },
+            bind: function (gl, ) {
+                gl.bindFramebuffer(gl.FRAMEBUFFER, this.fbo);
+            },
+            draw: function(gl, pgm) {
+                this.bb.draw(pgm, this.texture);
+            },
+            // this isn't used and shouldn't exist, the draw function should
+            // just handle multiple arguments
+            draw2: function (gl, pgm, texture2) {
+                this.bb.draw2(pgm, this.texture, texture2);
+            },
+        },
     };
 
     // gl stuff in here
@@ -65,8 +102,8 @@ if (typeof Object.create !== 'function') {
         init: function (cnvs) {
             this.gl = getWebGLContext(cnvs);
 
-            this.blur_fbo = new px.FBO(this.gl);
-            this.goop_fbo = new px.FBO(this.gl);
+            this.blur_fbo = Object.create(jarsGl.framebuffer);
+            this.goop_fbo = Object.create(jarsGl.framebuffer);
 
             this.programs = {};
 
@@ -89,11 +126,11 @@ if (typeof Object.create !== 'function') {
                     prog = that.programs.passthrough.id;
                 }
                 if (dest) {
-                    dest.bind();
+                    dest.bind(that.gl);
                 } else {
                     that.gl.bindFramebuffer(that.gl.FRAMEBUFFER, null);
                 }
-                src.draw(prog);
+                src.draw(that.gl, prog);
             };
             blit(this.blur_fbo, this.goop_fbo, this.programs.goop.id);
             blit(this.goop_fbo, this.blur_fbo, this.programs.blur.id);
@@ -103,8 +140,8 @@ if (typeof Object.create !== 'function') {
             var w = this.gl.drawingBufferWidth;
             var h = this.gl.drawingBufferHeight;
 
-            this.blur_fbo.allocate(w, h);
-            this.goop_fbo.allocate(w, h);
+            this.blur_fbo.allocate(this.gl, w, h);
+            this.goop_fbo.allocate(this.gl, w, h);
 
             this.gl.viewport(0, 0, w, h)
             this.programs.blur.unf(this.gl, {resolution: [w, h]});
