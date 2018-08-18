@@ -1,4 +1,4 @@
-module Content
+module ContentHelpers
   def project_slug p
       p.title.downcase.gsub(/\s+/, "")
   end
