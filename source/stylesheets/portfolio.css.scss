@@ -119,11 +119,12 @@ a {
 
 video {
     width: 100%;
+    height: 100vh;
     object-fit: cover;
     /* warning: hack ahead */
-    position: relative;
-    top: -100px;
-    z-index: -100;
+    // position: relative;
+    // top: -100px;
+    // z-index: -100;
     /* end hack */
 }
 

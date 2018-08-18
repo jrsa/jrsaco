@@ -36,10 +36,6 @@ module ContentHelpers
     bucket_get { |ob| ob.key[match] && ob.object.content_type['image'] }
   end
 
-  def s3_clips(p)
-    
-  end
-
   def vimeo_player id
     "https://player.vimeo.com/video/#{id}"
   end
@@ -69,6 +65,16 @@ module ContentHelpers
     elsif p.vimeo
       link_to('open in vimeo &#8594;', "https://vimeo.com/#{p.vimeo}", target: '_blank')
     end
+  end
+
+  def projectvids(p)
+    bucket_get{ |item| item.key[ project_slug(p) ] && (item.key[ "webm" ] || item.key[ "mov" ]) }
+    .map(&:public_url)
+  end
+
+  def has_projectvid(p)
+    # p.hasvid.nil?
+    true
   end
 
   def link(href, *args)

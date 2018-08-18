@@ -1,6 +1,15 @@
 {
     "projects": [
         {
+            "title": "apvfeedbake",
+            "type": "sculpture",
+            "year": 2018,
+            "link": "https://www.wholesomecircuits.com/sculptures/apvfeedbake/",
+            "collaborators": [
+                "shaurjya banerjee"
+            ]
+        },
+        {
             "type": "interactive",
             "title": "3DSANDBOX",
             "year": 2017,

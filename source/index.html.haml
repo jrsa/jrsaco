@@ -5,6 +5,10 @@
 
 -data.projects.projects.each do |project|
     .item{style: "background-image: url(#{project_thumb(project)});"}
+        - if has_projectvid(project)
+            %video
+                -projectvids(project).each do |p|
+                    %source{src: p}
         .description
             %h2
                 ="#{project.title}, #{project.year}"
